@@ -1,17 +1,21 @@
 import React from 'react';
 import Card from './card';
 
-const CardContainer = (props) => {
+class CardContainer extends React.Component {
 	// console.log(props);
-	return (
-		<main role="main" className="container">
+	render(){
+		return (
+		<main role="main" className="container cardContainer">
+		<h1>Axel's Game Shop</h1>
 		<div className='row'>
-    	{props.gameData.map((game)=> {
-    		return <Card game={game} />
+    	{this.props.gameData.map((game)=> {
+    		return <Card addToCart={this.props.addToCart} game={game} />
     	})}
     	</div>
     </main>
 	);
+	}
+	
 }
 
 export default CardContainer;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Navbar = () => {
+const Navbar = (props) => {
 	return (
 		 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a className="navbar-brand" href="#">Axel's Game Shop</a>
@@ -26,6 +26,11 @@ const Navbar = () => {
               <a className="dropdown-item" href="#">Another action</a>
               <a className="dropdown-item" href="#">Something else here</a>
             </div>
+          </li>
+          <li>
+          	 <a href="#" onClick={(e)=>props.displayCart(e)} className="btn btn-primary">
+           <i className="fas fa-shopping-cart"></i> {props.shoppingCartCount}
+        </a>
           </li>
         </ul>
         <form className="form-inline my-2 my-lg-0">
