@@ -4,6 +4,21 @@ body {
   font-family: sans-serif;
 }
 
+h1 {
+	font-family: 'Triforce';
+}
+
+.navbar-brand {
+	font-family: 'SNES', 'Helvetica';
+	letter-spacing: 3px;
+}
+
+.cardContainer .btn {
+	font-family:  Helvetica;
+	/*font-size:26px;*/
+	/*letter-spacing: 3px;*/
+}
+
 .container {
 	padding-top:5rem;	
 }
@@ -15,7 +30,7 @@ body {
 }
 
 .shoppingCart img {
-	max-width: 120px;
+	max-width: 100%;
 }
 
 
@@ -24,7 +39,7 @@ body {
 	height:250px;
 	}
 
-		.hidden-xs-down {
+.hidden-xs-down {
 	display:none !important;
 }
 

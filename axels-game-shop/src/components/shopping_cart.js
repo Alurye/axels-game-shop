@@ -4,14 +4,26 @@ import CartItem from './cartItem'
 class ShoppingCart extends React.Component {
 	
 	state = {
-		shoppingCart: this.props.shoppingCart
-
+		priceTotal: 0
 	}
 
+	calculateTotal = () => {
+		let total = 0;
+		this.props.shoppingCart.forEach((item) => {
+			let subtotal = item.price * item.quantity
+			 total+=subtotal;
+		});
+		return total.toFixed(2);
+		this.setState({
+			priceTotal: total
+		});
+	}
+
+	
+
 	render(){
-		console.log(this.state.shoppingCart);
-		const displayItems = this.state.shoppingCart.map((item) =>{
-			return <CartItem item={item} />
+		const displayItems = this.props.shoppingCart.map((item) =>{
+			return <CartItem deleteItem={this.props.deleteItem} item={item} />
 		})
 
 		return (
@@ -19,10 +31,10 @@ class ShoppingCart extends React.Component {
 			<table id="cart" className="table table-hover table-condensed">
     				<thead>
 						<tr>
-							<th style={{width: 50 + "%"}}>Product</th>
+							<th style={{width: 60 + "%"}}>Product</th>
 							<th style={{width: 10 + "%"}}>Price</th>
 							<th style={{width:  8 + "%"}}>Quantity</th>
-							<th style={{width: 22 + "%"}} className="text-center">Subtotal</th>
+							<th style={{width: 12 + "%"}} className="text-center">Subtotal</th>
 							<th style={{width: 10 +"%"}}></th>
 						</tr>
 					</thead>
@@ -36,7 +48,7 @@ class ShoppingCart extends React.Component {
 						<tr>
 							<td><a href="#" className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</a></td>
 							<td colspan="2" className="hidden-sm-up"></td>
-							<td className="hidden-sm-up text-center"><strong>Total $1.99</strong></td>
+							<td className="hidden-sm-up text-center"><strong>Total ${this.calculateTotal()}</strong></td>
 							<td><a href="#" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></a></td>
 						</tr>
 					</tfoot>

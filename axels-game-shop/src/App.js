@@ -13,15 +13,40 @@ class App extends Component {
     gameData: games,
     shoppingCart:[],
     cartClicked: false,
+    query: '',
+    cartCount:0,
+    currentCartItem: {
+        title:'',
+        console:'',
+        quantity:'',
+        price:'',
+        genre:'',
+        img:'',
+        description:''
+    }
   }
 
 addToCart = (item) => {
-    console.log(item)
     this.setState({
-      shoppingCart:[...this.state.shoppingCart, item]
-    });
+      currentCartItem: item,
+      shoppingCart:[...this.state.shoppingCart, this.state.currentCartItem]
+    }, this.cartLength);
   }
 
+cartLength = () => {
+  let cartCount = 0;
+ 
+     this.state.shoppingCart.map((item) => {
+        return cartCount+=item.quantity
+  });
+      console.log('hello:', cartCount);
+   
+    this.setState({
+    cartCount: cartCount
+      });
+  
+  
+}
 
 displayCart = () => {
     
@@ -32,14 +57,59 @@ displayCart = () => {
 
 }
 
+deleteItem = (item) => {
+ let filteredCart = this.state.shoppingCart.filter((itm) => {
+        return itm !== item
+  });
+   this.setState({
+      shoppingCart: filteredCart
+   }, this.cartLength);
+}
+
+handleSearch = (e) => {
+    
+    this.setState({
+      query: e.target.value
+  });
+
+
+  }
+
+
+  handleQuantity = (e) => {
+    e.preventDefault
+    if (e.target.value > this.props.quantity) {
+      this.setState({
+        currentCartItem: {
+           quantity: this.props.quantity
+        }
+       
+      });
+    } else if (e.target.value < 1) {
+      this.setState({
+        quantity: 1
+      });
+    } else {
+      this.setState({
+      quantity: e.target.value
+    }, console.log(this.state.value));
+    }
+
+
+    
+  }
 
 
   render() {
-    console.log(this.state.shoppingCart)
+    console.log(this.state.query);
+    let filteredSearch = this.state.gameData.filter(item => 
+          item.title.toLowerCase().includes(this.state.query.toLowerCase()));
+
+      ;
     return (
       <React.Fragment>
-       <Navbar displayCart={this.displayCart} shoppingCartCount={this.state.shoppingCart.length}/>
-        {this.state.cartClicked ? <ShoppingCart shoppingCart={this.state.shoppingCart} /> :<CardContainer addToCart={this.addToCart} gameData={this.state.gameData} />}
+       <Navbar query={this.state.query} handleSearch={this.handleSearch} shoppingCart={this.state.shoppingCart} displayCart={this.displayCart} cartCount={this.state.cartCount}/>
+        {this.state.cartClicked ? <ShoppingCart deleteItem={this.deleteItem} shoppingCart={this.state.shoppingCart} /> :<CardContainer addToCart={this.addToCart} gameData={filteredSearch} />}
     </React.Fragment>
     );
   }
