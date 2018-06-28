@@ -4,7 +4,7 @@ import React from 'react';
 class GameDetails extends React.Component {
 	  
 	state = {
-		quantity: this.props.quantity
+		quantity: this.props.game.quantity
 	}
 
 	handleQuantity = (e) => {
@@ -20,24 +20,24 @@ class GameDetails extends React.Component {
 		} else {
 			this.setState({
 			quantity: e.target.value
-		}, console.log(this.state.value));
+		});
 		}
 
-
+		this.props.updateQuantity(this.props.id,this.state.quantity);
 		
 	}
 
 	render(){
-		const {title,genre,price,quantity,description} = this.props
-
+		console.log(this.props);
+		const {id,title,img, genre,price,quantity,description} = this.props.game
 		return (
 		<div className="card-body">
 			<h4 className="card-title">{title}</h4>
 			<p className="card-text"><strong>Price:</strong> ${price}</p>
 			<form className="form-inline">
 			<div className="input-group mb-2 mr-sm-2 mb-sm-0">
-				<label htmlFor="Quantity">Quantity:</label>
-				 <input onChange={(e) => this.handleQuantity(e)} className='form-control mb-2 mr-sm-2 mb-sm-0' type="number" value={this.state.quantity} />
+				<label htmlFor="Quantity">Quantity: </label>
+				 <input onChange={(e)=>this.handleQuantity(e)} className='form-control mb-2 mr-sm-2 mb-sm-0' type="number" value={this.state.quantity} />
 			</div>
 			</ form>
 			<p className="card-text"><strong>Genre:</strong> {genre}</p>

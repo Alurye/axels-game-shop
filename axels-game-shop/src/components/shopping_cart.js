@@ -1,5 +1,7 @@
 import React from 'react';
 import CartItem from './cartItem'
+import {connect} from 'react-redux';
+import {addToCart} from '../actions/index';
 
 class ShoppingCart extends React.Component {
 	
@@ -22,10 +24,11 @@ class ShoppingCart extends React.Component {
 	
 
 	render(){
+				// console.log(this.props);
+
 		const displayItems = this.props.shoppingCart.map((item) =>{
 			return <CartItem deleteItem={this.props.deleteItem} item={item} />
 		})
-
 		return (
 		 <main role="main" className="shoppingCart container">
 			<table id="cart" className="table table-hover table-condensed">
@@ -58,4 +61,21 @@ class ShoppingCart extends React.Component {
 	}
 }
 
-export default ShoppingCart;
+
+const mapStateToProps = (state) => {
+			return {
+				shoppingCart: state.shoppingCart
+			}
+}
+
+// const  mapDispatchToProps = (dispatch) => {
+// 			addToCart: (item) => {
+// 				dispatch: "ADD_TO_CART"
+// 			}
+// }
+
+export default connect(mapStateToProps)(ShoppingCart);
+
+
+
+

@@ -6,11 +6,12 @@ import CardContainer from './components/card_container'
 import Card from './components/card';
 import games from './components/game_data'
 import ShoppingCart from './components/shopping_cart'
+import {connect} from 'react-redux';
+import {addToCart} from './actions/index';
 
 class App extends Component {
 
   state = {
-    gameData: games,
     shoppingCart:[],
     cartClicked: false,
     query: '',
@@ -18,7 +19,7 @@ class App extends Component {
     currentCartItem: {
         title:'',
         console:'',
-        quantity:'',
+        quantity:0,
         price:'',
         genre:'',
         img:'',
@@ -27,11 +28,19 @@ class App extends Component {
   }
 
 addToCart = (item) => {
+
+   if (this.state.shoppingCart.includes(item)){
+          return false;
+   } else {
     this.setState({
-      currentCartItem: item,
-      shoppingCart:[...this.state.shoppingCart, this.state.currentCartItem]
+      currentCartItem:item,
+      shoppingCart:[...this.state.shoppingCart, item]
     }, this.cartLength);
+   }
+
   }
+
+
 
 cartLength = () => {
   let cartCount = 0;
@@ -39,7 +48,6 @@ cartLength = () => {
      this.state.shoppingCart.map((item) => {
         return cartCount+=item.quantity
   });
-      console.log('hello:', cartCount);
    
     this.setState({
     cartCount: cartCount
@@ -76,24 +84,57 @@ handleSearch = (e) => {
   }
 
 
-  handleQuantity = (e) => {
-    e.preventDefault
-    if (e.target.value > this.props.quantity) {
-      this.setState({
-        currentCartItem: {
-           quantity: this.props.quantity
+  updateGames = (id,quantity) => {
+      // console.log("id", id, "quantity", quantity);
+   let updatedGameData = this.props.games.map((game) => {
+        if (game.id === id) {
+           console.log(game.quantity);
+         return  this.state.currentCartItem;
+        } else {
+          return game;
         }
+        
+  });
+          // console.log(updatedGameData)
+
+   // this.setState({
+   //      gameData:updatedGameData
+   // }, console.log(this.state.gameData));
+
+  }
+
+  updateQuantity = (quantity, id) => {
+    // e.preventDefault();
+    console.log(this.state.currentCartItem);
+
+      this.setState({
+        currentCartItem: {...this.state.currentCartItem,
+          quantity: quantity
+        }
+      }, this.updateGames(id, quantity));
+
+    // if (e.target.value > this.props.quantity) {
+    //   this.setState({
+    //     currentCartItem: {
+    //        quantity: this.props.quantity
+    //     }
        
-      });
-    } else if (e.target.value < 1) {
-      this.setState({
-        quantity: 1
-      });
-    } else {
-      this.setState({
-      quantity: e.target.value
-    }, console.log(this.state.value));
-    }
+    //   });
+    // } else if (e.target.value < 1) {
+    //   this.setState({
+    //     currentCartItem: {
+    //       quantity: 1
+    //     }
+       
+    //   });
+    // } else {
+    //   this.setState({
+    //     currentCartItem: {
+    //        quantity: e.target.value
+    //     }
+      
+    // });
+    // }
 
 
     
@@ -101,18 +142,37 @@ handleSearch = (e) => {
 
 
   render() {
-    console.log(this.state.query);
-    let filteredSearch = this.state.gameData.filter(item => 
-          item.title.toLowerCase().includes(this.state.query.toLowerCase()));
-
-      ;
+    console.log(this.props);
+    // console.log(this.state.gameData);
+    // let filteredSearch = this.props.games.filter(item => 
+    //       item.title.toLowerCase().includes(this.state.query.toLowerCase()));
+    // console.log(this.updateGames(2,1));
+    // console.log(this.state.gameData, prevState);
+    // console.log(this.state.currentCartItem.quantity,this.state.currentCartItem);      
     return (
       <React.Fragment>
        <Navbar query={this.state.query} handleSearch={this.handleSearch} shoppingCart={this.state.shoppingCart} displayCart={this.displayCart} cartCount={this.state.cartCount}/>
-        {this.state.cartClicked ? <ShoppingCart deleteItem={this.deleteItem} shoppingCart={this.state.shoppingCart} /> :<CardContainer addToCart={this.addToCart} gameData={filteredSearch} />}
+        {this.state.cartClicked ? <ShoppingCart deleteItem={this.deleteItem}  /> :<CardContainer updateQuantity={this.updateQuantity} addToCart={this.addToCart}  />}
     </React.Fragment>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+     games: state.gameData
+  }
+}
+
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (item) => {
+      dispatch(addToCart(item))
+    }
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

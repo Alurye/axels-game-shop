@@ -1,7 +1,8 @@
 import React from 'react';
 import SearchBar from './components/SearchBar';
+import {connect} from 'react-redux';
 const Navbar = (props) => {
-	console.log(props);
+	// console.log(props);
 	return (
 		 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a className="navbar-brand" href="#">Axel's Game Shop</a>
@@ -36,4 +37,13 @@ const Navbar = (props) => {
     </nav>
     )
 };
-export default Navbar;
+
+
+const mapStateToProps = (state) => {
+  return {
+    shoppingCart: state.shoppingCart
+  }
+}
+
+
+export default connect(mapStateToProps)(Navbar);
