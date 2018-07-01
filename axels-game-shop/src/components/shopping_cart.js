@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {addToCart} from '../actions/index';
 
 class ShoppingCart extends React.Component {
-	
+
 	state = {
 		priceTotal: 0
 	}
@@ -21,7 +21,7 @@ class ShoppingCart extends React.Component {
 		});
 	}
 
-	
+
 
 	render(){
 				// console.log(this.props);
@@ -50,7 +50,7 @@ class ShoppingCart extends React.Component {
 						</tr>
 						<tr>
 							<td><a href="#" className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</a></td>
-							<td colspan="2" className="hidden-sm-up"></td>
+							<td colSpan="2" className="hidden-sm-up"></td>
 							<td className="hidden-sm-up text-center"><strong>Total ${this.calculateTotal()}</strong></td>
 							<td><a href="#" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></a></td>
 						</tr>
@@ -75,7 +75,3 @@ const mapStateToProps = (state) => {
 // }
 
 export default connect(mapStateToProps)(ShoppingCart);
-
-
-
-

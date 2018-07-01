@@ -1,9 +1,19 @@
 import React from 'react';
+import {BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import CardContainer from './components/card_container';
+import RegisterGameForm from './components/register_game_form';
 import SearchBar from './components/SearchBar';
 import {connect} from 'react-redux';
+import App from './App';
+import Home from './components/home';
+
 const Navbar = (props) => {
-	// console.log(props);
+	console.log(props);
+	// onClick={props.displayForm}
+	console.log(props.match)
+
 	return (
+		<React.Fragment>
 		 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a className="navbar-brand" href="#">Axel's Game Shop</a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,37 +23,49 @@ const Navbar = (props) => {
       <div className="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+
+            <Link to="/home" className="nav-link">Home <span className="sr-only">(current)</span></Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">Link</a>
+            <Link to="/register-game-form"  className="nav-link">Add Game</Link>
           </li>
-          <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div className="dropdown-menu" aria-labelledby="dropdown01">
-              <a className="dropdown-item" href="#">Action</a>
-              <a className="dropdown-item" href="#">Another action</a>
-              <a className="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
+					<li className="nav-item">
+						<Link to="/inventory" className="nav-link">Inventory</Link>
+					</li>
           <li>
-          	 <a href="#" onClick={(e)=>props.displayCart(e)} className="btn btn-primary">
+          	 <Link to="/shopping-cart" href="#" onClick={props.displayCart} className="btn btn-primary">
            <i className="fas fa-shopping-cart"></i> {props.cartCount}
-        </a>
+        </Link>
           </li>
         </ul>
         <SearchBar query={props.query} handleSearch={props.handleSearch} shoppingCart={props.shoppingCart} />
       </div>
+
     </nav>
+
+</React.Fragment>
     )
 };
 
 
 const mapStateToProps = (state) => {
   return {
-    shoppingCart: state.shoppingCart
+    shoppingCart: state.shoppingCart,
+		gameFormClicked: state.gameFormClicked,
+		cartClicked: state.cartClicked,
+		cartCount: state.cartCount
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+	return {
+			displayForm: () => {
+				dispatch({type: "DISPLAY_FORM"});
+			},
+			displayCart: () => {
+				dispatch({type: "DISPLAY_CART"});
+			}
+	}
+}
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

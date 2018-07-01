@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {addToCart} from '../actions/index';
 
 class Card extends React.Component {
-	
+
 	state = {
 		isClicked: false
 	}
@@ -16,10 +16,10 @@ class Card extends React.Component {
     });
  }
 
- 	
+
 
      render() {
-     				console.log(this.props);
+     				// console.log(this.props);
 
      	const {id,title,img,price,quantity,description, genre} = this.props.game
      return (

@@ -1,8 +1,11 @@
 import React from 'react';
-
+import {connect} from 'react-redux';
+import {deleteItem} from '../actions/index'
 const CartItem = (props) => {
 		const {img, title, description, price, quantity} = props.item;
+			console.log(props);
 	return(
+
 		<tr>
 			<td data-th="Product">
 				<div className="row">
@@ -22,10 +25,26 @@ const CartItem = (props) => {
 				<button className="btn btn-info btn-sm"><i className="fas fa-sync-alt"></i></button>
 				<button onClick={() => props.deleteItem(props.item)} className="btn btn-danger btn-sm"><i className="fas fa-trash-alt"></i></button>
 
-				
+
 			</td>
 		</tr>
 		);
 }
 
-export default CartItem;
+const mapStateToProps = (state) => {
+			return {
+				shoppingCart: state.shoppingCart
+			}
+}
+const mapDispatchToProps = (dispatch) => {
+	
+	return {
+		deleteItem: (item) => {
+			 dispatch(deleteItem(item));
+		}
+	}
+
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartItem);

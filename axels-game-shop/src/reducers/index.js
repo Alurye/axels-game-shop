@@ -5,6 +5,7 @@ const initialState = {
 	gameData: games,
     shoppingCart:[],
     cartClicked: false,
+		gameFormClicked: false,
     query: '',
     cartCount:0,
     currentCartItem: {
@@ -15,7 +16,7 @@ const initialState = {
         genre:'',
         img:'',
         description:''
-  
+
 
 	}
 
@@ -23,19 +24,42 @@ const initialState = {
 const reducer = (state = initialState, action) => {
 		switch(action.type) {
 			case "ADD_TO_CART":
-			console.log(state.shoppingCart);
 			let newState
 			if (state.shoppingCart.includes(action.payload)) {
 				newState = {...state}
 			} else {
-				newState = {...state, shoppingCart: [...state.shoppingCart, action.payload]}
+				let totalCartItems = 0;
+					console.log('hit', totalCartItems, action.type);
+						 	state.shoppingCart.map((item) => {
+
+								return console.log(totalCartItems+=item.quantity)
+								console.log(totalCartItems)
+					});
+
+				newState = {...state, shoppingCart: [...state.shoppingCart, action.payload], cartCount: totalCartItems}
 			}
+			console.log('hit',newState);
+
 			return newState;
 
-		default: 
+			case "DISPLAY_FORM":
+			return {...state, gameFormClicked: !state.gameFormClicked, cartClicked: false};
+
+			case "DISPLAY_CART":
+			return {...state, cartClicked: !state.cartClicked, gameFormClicked: false};
+
+			case "DELETE_ITEM":
+			let filteredCart = state.shoppingCart.filter((itm) => {
+				return itm.id !== action.payload.id
+			});
+			return {...state, shoppingCart: filteredCart};
+
+
+
+			default:
 			return state;
 	}
-	
+
 }
 
 export default reducer;

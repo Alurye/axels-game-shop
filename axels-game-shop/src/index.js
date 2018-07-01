@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom'
 import './index.css';
 import App from './App';
 import games from './components/game_data'
@@ -19,9 +20,8 @@ import {Provider} from 'react-redux';
 // 	type: "DELETE_ITEM",
 // 	payload: 'text'
 // }
-// 
+//
 const store = createStore(reducer);
-
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 registerServiceWorker();

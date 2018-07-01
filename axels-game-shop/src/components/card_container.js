@@ -11,7 +11,7 @@ class CardContainer extends React.Component {
 		<h1>Axel's Game Shop</h1>
 		<div className='row'>
     	{this.props.games.map((game)=> {
-    		return <Card key={game.id} updateQuantity={this.props.updateQuantity} addToCart={this.props.addToCart} game={game} />
+    		return <Card key={game.id} updateQuantity={this.props.updateQuantity}  game={game} />
     	})}
     	</div>
     </main>
@@ -23,7 +23,7 @@ class CardContainer extends React.Component {
 const mapStateToProps = (state) => {
   return {
      games: state.gameData
-     
+
   }
 }
 
