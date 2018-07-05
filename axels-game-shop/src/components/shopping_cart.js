@@ -2,7 +2,7 @@ import React from 'react';
 import CartItem from './cartItem'
 import {connect} from 'react-redux';
 import {addToCart} from '../actions/index';
-
+import {Link} from 'react-router-dom';
 class ShoppingCart extends React.Component {
 
 	state = {
@@ -27,7 +27,7 @@ class ShoppingCart extends React.Component {
 				// console.log(this.props);
 
 		const displayItems = this.props.shoppingCart.map((item) =>{
-			return <CartItem deleteItem={this.props.deleteItem} item={item} />
+			return <CartItem key={item.id} item={item} />
 		})
 		return (
 		 <main role="main" className="shoppingCart container">
@@ -42,17 +42,18 @@ class ShoppingCart extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-					{displayItems}
+						{this.props.shoppingCart.length === 0 ? <tr><td style={{paddingTop:15 + "px" }}>Your shopping cart is currently empty.</td></tr>: displayItems}
+
 					</tbody>
 					<tfoot>
 						<tr className="hidden-xs-down">
 							<td className="text-center"><strong>Total 1.99</strong></td>
 						</tr>
 						<tr>
-							<td><a href="#" className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</a></td>
+							<td><Link to="/games" className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</Link></td>
 							<td colSpan="2" className="hidden-sm-up"></td>
 							<td className="hidden-sm-up text-center"><strong>Total ${this.calculateTotal()}</strong></td>
-							<td><a href="#" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></a></td>
+							<td><Link to="/checkout" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></Link></td>
 						</tr>
 					</tfoot>
 				</table>

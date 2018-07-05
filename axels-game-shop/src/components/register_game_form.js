@@ -42,7 +42,7 @@ handleSubmit = (e) => {
   render(){
     console.log(this.state.gameFields);
     return (
-      <main role="main" className="container cardContainer">
+      <main role="main" className="container col-md-4 offset-md-4">
         <h2>Register New Game</h2>
       <form onSubmit={this.handleSubmit}>
   <div className="form-group">

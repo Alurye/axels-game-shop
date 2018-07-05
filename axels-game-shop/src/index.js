@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter} from 'react-router-dom'
 import './index.css';
 import App from './App';
 import games from './components/game_data'
 import registerServiceWorker from './registerServiceWorker';
 import reducer from './reducers/index';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-
+import thunk from 'redux-thunk';
 
 
 // const action = {
@@ -21,7 +20,13 @@ import {Provider} from 'react-redux';
 // 	payload: 'text'
 // }
 //
-const store = createStore(reducer);
+// const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+// const store = createStoreWithMiddleware(reducer)
+// const store = createStore(reducer, applyMiddleware(thunk));
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+const store = createStoreWithMiddleware(reducer);
+
+
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 registerServiceWorker();
