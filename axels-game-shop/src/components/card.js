@@ -22,7 +22,7 @@ class Card extends React.Component {
 
 
      render() {
-     				console.log(this.props);
+     				// console.log(this.props);
      	const {img} = this.props.game
      return (
 		<div className="col-lg-4 col-md-6 col-xs-12">

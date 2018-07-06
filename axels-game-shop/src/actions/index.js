@@ -19,17 +19,17 @@ export function deleteItem(item) {
 	}
 }
 
-export function handleQuantity(e, item) {
+export function handleQuantity(q,item) {
 	return {
 		type: "HANDLE_QUANTITY",
 		payload: item,
-		qty: e.target.value
+		qty: q
 	}
 }
 
-let url = 'http://localhost:3000/api/v1/games';
-
 export function getGames() {
+	let url = 'http://localhost:3000/api/v1/games';
+
 	return(dispatch, getState) => {
 			 fetch(url, {
 			headers: {
@@ -40,18 +40,10 @@ export function getGames() {
 		.then(json => {
 			console.log(json)
 			dispatch({type: "GET_GAMES", payload:json});
-				// this.setState({
-				// 	games: json
-				// });
+
 		});
 
 	}
 
 
-
 }
-
-// export function updateQuantity(quantity, id){
-// 	type: "UPDATE_QUANTITY",
-// 	payload:
-// }

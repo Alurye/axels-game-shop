@@ -25,7 +25,9 @@ class Login extends React.Component {
       method: "POST",
       headers: {
         'accept': 'application/json',
-        'content-type': 'application/json',
+        'content-type': 'application/json'
+        // 'authorization': localStorage.getItem('token')
+
       },
     }).then(res => res.json())
     .then(json => {

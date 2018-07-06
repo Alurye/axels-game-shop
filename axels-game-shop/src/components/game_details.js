@@ -8,33 +8,31 @@ import {handleQuantity} from '../actions/index';
 class GameDetails extends React.Component {
 
 	state = {
-		quantity: this.props.game.quantity
+		quantity: this.props.game.quantity, //2
 	}
 
 	handleQuantity = (e, item) => {
 		e.preventDefault();
-		if (e.target.value > this.props.game.quantity) {
+		let newQuantity = parseInt(e.target.value)
+
+		if (newQuantity > this.props.game.quantity) {
 			this.setState({
-				[e.target.name]: this.props.game.quantity
-			});
-		} else if (e.target.value < 1) {
+				quantity: this.props.game.quantity
+			}, () => this.props.handleQuantity(this.state.quantity, item));
+		} else if (newQuantity < 1) {
 			this.setState({
-				[e.target.name]: 1
-			});
+				quantity: 1
+			}, () => this.props.handleQuantity(this.state.quantity, item));
 		} else {
 			this.setState({
-			[e.target.name]: e.target.value
-		});
+			quantity: newQuantity
+		}, () => this.props.handleQuantity(this.state.quantity, item));
 		}
-
-
-		this.props.handleQuantity(e, item)
-
 	}
 
 	render(){
-		console.log(this.props);
-		console.log(this.props.gameData);
+		// console.log(this.state.quantity)
+		// console.log(this.props.gameData);
 		const {title,genre,price,description} = this.props.game
 		return (
 		<div className="card-body">
@@ -47,7 +45,7 @@ class GameDetails extends React.Component {
 			</div>
 			</ form>
 			<p className="card-text"><strong>Genre:</strong> {genre}</p>
-			<p className="card-text"><strong>Descripstion:</strong> {description}</p>
+			<p className="card-text"><strong>Description:</strong> {description}</p>
 		</div>
 		);
 	}
@@ -63,8 +61,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleQuantity: (e, item) => {
-			dispatch(handleQuantity(e, item));
+		handleQuantity: (e,q,item) => {
+			dispatch(handleQuantity(e,q,item));
 		}
 	}
 }

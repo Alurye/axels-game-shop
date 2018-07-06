@@ -1,7 +1,6 @@
 import React from 'react';
 import CartItem from './cartItem'
 import {connect} from 'react-redux';
-import {addToCart} from '../actions/index';
 import {Link} from 'react-router-dom';
 class ShoppingCart extends React.Component {
 
@@ -53,7 +52,8 @@ class ShoppingCart extends React.Component {
 							<td><Link to="/games" className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</Link></td>
 							<td colSpan="2" className="hidden-sm-up"></td>
 							<td className="hidden-sm-up text-center"><strong>Total ${this.calculateTotal()}</strong></td>
-							<td><Link to="/checkout" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></Link></td>
+							<td>{this.props.shoppingCart.length !== 0 ? <Link to="/checkout" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></Link> : null }
+</td>
 						</tr>
 					</tfoot>
 				</table>
@@ -69,10 +69,5 @@ const mapStateToProps = (state) => {
 			}
 }
 
-// const  mapDispatchToProps = (dispatch) => {
-// 			addToCart: (item) => {
-// 				dispatch: "ADD_TO_CART"
-// 			}
-// }
 
 export default connect(mapStateToProps)(ShoppingCart);

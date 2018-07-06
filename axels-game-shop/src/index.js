@@ -24,7 +24,7 @@ import thunk from 'redux-thunk';
 // const store = createStoreWithMiddleware(reducer)
 // const store = createStore(reducer, applyMiddleware(thunk));
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-const store = createStoreWithMiddleware(reducer);
+const store = createStoreWithMiddleware(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 
 

@@ -1,11 +1,7 @@
 import React from 'react';
-import {Link, Redirect} from 'react-router-dom';
-import CardContainer from './components/card_container';
-import RegisterGameForm from './components/register_game_form';
+import {Link} from 'react-router-dom';
 import SearchBar from './components/SearchBar';
 import {connect} from 'react-redux';
-import App from './App';
-import Home from './components/home';
 
 const Navbar = (props) =>  {
 
