@@ -1,68 +1,84 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import SearchBar from './components/SearchBar';
 import {connect} from 'react-redux';
 
-const Navbar = (props) =>  {
+class Navbar extends React.Component {
 
-let totalCartItems = () => {
+state = {
+	loggedOut: this.props.loggedIn
+}
+
+
+ totalCartItems = () => {
 		let totalCartItems = 0;
-				 props.shoppingCart.map((item) => {
+				 this.props.shoppingCart.map((item) => {
 							return totalCartItems+=item.quantity;
 									});
 					return totalCartItems;
 
 	}
 
+ logOut = (e) => {
+	e.preventDefault();
+	localStorage.removeItem('token')
+	localStorage.removeItem('id');
+	this.setState({
+		loggedOut:true
+	})
+}
+
+render(){
+	console.log(this.props);
+
+	return (
+		 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+			<NavLink to="/" className="navbar-brand">Axel's Game Shop</NavLink>
+			<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+				<span className="navbar-toggler-icon"></span>
+			</button>
+
+			<div className="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul className="navbar-nav mr-auto">
 
 
-
-		return (
-			<React.Fragment>
-			 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-	      <Link to="/home" className="navbar-brand">Axel's Game Shop</Link>
-	      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-	        <span className="navbar-toggler-icon"></span>
-	      </button>
-
-	      <div className="collapse navbar-collapse" id="navbarsExampleDefault">
-	        <ul className="navbar-nav mr-auto">
-
-
-							{localStorage.getItem('token')?
+						{localStorage.getItem("token") ?
 								<React.Fragment>
 								<li className="nav-item">
-									<Link to="/register-game-form"  className="nav-link">Add Game</Link>
+									<NavLink  to="/register-game-form"  className="nav-link">Add Game</NavLink>
 								</li>
 								<li className="nav-item">
-									<Link to="/inventory" className="nav-link">Inventory</Link>
+									<NavLink to="/inventory" className="nav-link">Inventory</NavLink>
 								</li>
 								<li className="nav-item">
-									<Link to="/orders"  className="nav-link">Orders</Link>
+									<NavLink to="/orders"  className="nav-link">Orders</NavLink>
 								</li>
-									</React.Fragment>
-								:
 								<li className="nav-item">
-									<Link to="/games" className="nav-link">Shop Games</Link>
+									<NavLink onClick={this.logOut} to="/"  className="nav-link">Logout</NavLink>
 								</li>
-							 }
+							</React.Fragment>
+							:
+								<React.Fragment>
+								<li className="nav-item">
+									<NavLink to="/games" className="nav-link">Shop Games</NavLink>
+								</li>
+								<li>
+								 <NavLink  to="/shopping-cart" className="btn btn-primary">
+						 <i className="fas fa-shopping-cart"></i> {this.totalCartItems()}
+						</NavLink>
+							</li>
+						</React.Fragment>
+						 }
 
 
+				</ul>
+				<SearchBar query={this.props.query} handleSearch={this.props.handleSearch} shoppingCart={this.props.shoppingCart} />
+			</div>
 
+		</nav>
+		)
+}
 
-	          <li>
-	          	 <Link to="/shopping-cart" href="#" onClick={props.displayCart} className="btn btn-primary">
-	         <i className="fas fa-shopping-cart"></i> {totalCartItems()}
-	        </Link>
-	          </li>
-	        </ul>
-	        <SearchBar query={props.query} handleSearch={props.handleSearch} shoppingCart={props.shoppingCart} />
-	      </div>
-
-	    </nav>
-
-	</React.Fragment>
-	    )
 
 };
 
@@ -71,7 +87,8 @@ const mapStateToProps = (state) => {
   return {
     shoppingCart: state.shoppingCart,
 		gameFormClicked: state.gameFormClicked,
-		cartClicked: state.cartClicked
+		cartClicked: state.cartClicked,
+		loggedIn: state.loggedIn
   }
 }
 

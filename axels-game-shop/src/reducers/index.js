@@ -4,6 +4,8 @@ const initialState = {
     cartClicked: false,
 		gameFormClicked: false,
 		gameDetailsClicked:false,
+		loggedIn:false,
+		orderNumber:'',
     query: '',
     cartCount:0,
     currentCartItem: {
@@ -23,23 +25,19 @@ const reducer = (state = initialState, action) => {
 		  	return { ...state, gameData: action.payload }
 
 			case "ADD_TO_CART":
-				let newState
-				if (state.shoppingCart.includes(action.payload)) {
-					newState = {...state}
-				} else {
-					newState = {...state, shoppingCart: [...state.shoppingCart, action.payload], currentCartItem: action.payload}
-				}
 
-				return newState;
+				return {...state, shoppingCart: [...state.shoppingCart, action.payload], currentCartItem: action.payload}
+
 
 			case "SHOW_GAME_DETAILS":
 				return {...state, gameDetailsClicked: !state.gameDetailsClicked, currentCartItem: action.payload}
 
-			case "DISPLAY_FORM":
-				return {...state, gameFormClicked: !state.gameFormClicked, cartClicked: false};
+			case "SAVE_ORDER_NUMBER":
+				return {...state, orderNumber: action.payload }
 
-			case "DISPLAY_CART":
-				return {...state, cartClicked: !state.cartClicked, gameFormClicked: false};
+
+			case "LOGIN":
+				return {...state, loggedIn: !state.loggedIn}
 
 			case "DELETE_ITEM":
 				let filteredCart = state.shoppingCart.filter((itm) => {

@@ -1,9 +1,9 @@
 const games = [
 
 	{
-	     id: 1,
-	     title: "Final Fantasy VII", 
-		 console: "Sony Playstation",	
+	   id: 1,
+	   title: "Final Fantasy VII",
+		 console: "Sony Playstation",
 		 quantity: 1,
 		 price: 45.00,
 		 genre: "RPG",
@@ -135,6 +135,13 @@ const games = [
 		genre: "Adventure",
 		img: "http://www.mobygames.com/images/covers/l/17730-banjo-kazooie-nintendo-64-front-cover.jpg",
 		description: "Banjo-Kazooie's fairy tale back story is reminiscent of Snow White's. A gnarled, ugly witch named Gruntilda asks her magical cauldron who is the fairest of them all. Of course, the pot's answer doesn't please the hag: he singles out Banjo's sister, Tooty. When Tooty turns up missing, Banjo and his birdie buddy Kazooie set out to find her."
+	},
+	{
+		title:"Sonic the Hedgehog 2",
+		price: 35.00,
+		img: "http://www.mobygames.com/images/covers/s/13116-sonic-the-hedgehog-2-genesis-front-cover.jpg",
+		adventure: "action",
+		description:"Only Sonic the Hedgehog, and his new tagalong partner, Miles 'Tails' Prower, can stop Robotnik and his army of Badniks from taking over the world."
 	}
 
 ]

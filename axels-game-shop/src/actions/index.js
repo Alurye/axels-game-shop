@@ -27,6 +27,21 @@ export function handleQuantity(q,item) {
 	}
 }
 
+export function log_In(state) {
+	return {
+		type: "LOGIN",
+		payload: state,
+	}
+}
+
+export function saveOrderNumber(num) {
+	return {
+		type: "SAVE_ORDER_NUMBER",
+		payload: num
+	}
+}
+
+
 export function getGames() {
 	let url = 'http://localhost:3000/api/v1/games';
 
@@ -47,3 +62,29 @@ export function getGames() {
 
 
 }
+
+
+// export function handleLoginSubmit(cred) {
+// 	// console.log(e);
+// 	// e.preventDefault();
+// 	let url = 'http://localhost:3000/api/v1/sessions'
+// 	return(dispatch, getState) => {
+// 		fetch(url, {
+// 			body: JSON.stringify(cred),
+// 			method: "POST",
+// 			headers: {
+// 				'accept': 'application/json',
+// 				'content-type': 'application/json'
+//
+// 			},
+// 		}).then(res => res.json())
+// 		.then(json => {
+// 			console.log(json)
+// 			dispatch({type: "LOGIN"});
+// 			localStorage.setItem('token', json.token);
+// 			localStorage.setItem('id', json.id);
+// 			this.props.history.push("/inventory")
+// 		});
+// 	}
+//
+// }

@@ -13,7 +13,9 @@ state = {
 }
 
 componentDidMount(){
- this.props.dispatch(getGames());
+
+	this.props.dispatch(getGames());
+
 }
 
 
@@ -35,11 +37,11 @@ componentDidMount(){
 // }
 
 	render(){
-			// console.log(this.props);
+
 
 		return (
 		<main role="main" className="container cardContainer">
-		<h1>Axel's Game Shop</h1>
+		<h1>Shop Games</h1>
 		<div className='row'>
     	{this.props.games.map((game)=> {
     		return <Card key={game.id} game={game} />

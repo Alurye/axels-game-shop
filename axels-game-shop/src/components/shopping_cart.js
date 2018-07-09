@@ -4,9 +4,6 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 class ShoppingCart extends React.Component {
 
-	state = {
-		priceTotal: 0
-	}
 
 	calculateTotal = () => {
 		let total = 0;
@@ -15,9 +12,6 @@ class ShoppingCart extends React.Component {
 			 total+=subtotal;
 		});
 		return total.toFixed(2);
-		this.setState({
-			priceTotal: total
-		});
 	}
 
 

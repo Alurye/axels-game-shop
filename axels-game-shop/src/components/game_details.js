@@ -13,7 +13,7 @@ class GameDetails extends React.Component {
 
 	handleQuantity = (e, item) => {
 		e.preventDefault();
-		let newQuantity = parseInt(e.target.value)
+		let newQuantity = parseInt(e.target.value, 10)
 
 		if (newQuantity > this.props.game.quantity) {
 			this.setState({

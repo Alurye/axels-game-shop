@@ -1,5 +1,7 @@
 import React from 'react';
 import CheckoutListItem from './checkout_list_item';
+import UUID from 'uuid';
+import {saveOrderNumber} from '../actions/index';
 import {connect} from 'react-redux';
 
 
@@ -10,8 +12,28 @@ import {connect} from 'react-redux';
 class CheckoutForm extends React.Component {
 
   state = {
-		priceTotal: 0
+		first_name: '',
+    last_name:'',
+    email:'',
+    address:'',
+    address_2: '',
+    state:'',
+    country:'',
+    zipCode:'',
+    store_id:1,
+    order_number: UUID()
 	}
+
+
+
+
+  handleCheckout = (e) => {
+    e.preventDefault();
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+
+  }
 
   totalCartItems = () => {
        let totalCartItems = 0;
@@ -29,11 +51,27 @@ class CheckoutForm extends React.Component {
 			 total+=subtotal;
 		});
 		return total.toFixed(2);
-		this.setState({
-			priceTotal: total
-		});
 	}
 
+
+  orderSubmit = (e) => {
+
+    e.preventDefault();
+    let url = 'http://localhost:3000/api/v1/orders'
+    fetch(url, {
+      body: JSON.stringify(this.state),
+      method: "POST",
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json'
+      },
+    }).then(res => res.json())
+    .then(json => {
+      this.props.saveOrderNumber(this.state.orderNumber);
+      this.props.history.push('/order-confirmed');
+      console.log(this.state.orderNumber)
+    });
+  }
               // <li className="list-group-item d-flex justify-content-between bg-light">
               //   <div className="text-success">
               //     <h6 className="my-0">Promo code</h6>
@@ -44,7 +82,7 @@ class CheckoutForm extends React.Component {
 
 
   render(){
-    console.log(this.props);
+    console.log(this.state.orderNumber);
 
     return(
       <div className="container">
@@ -60,7 +98,7 @@ class CheckoutForm extends React.Component {
           </h4>
           <ul className="list-group mb-3">
               {this.props.shoppingCart.length !== 0 ? this.props.shoppingCart.map((item) => {
-                 return <CheckoutListItem item={item} />
+                 return <CheckoutListItem key={item.id} item={item} />
               }) : null }
 
             <li className="list-group-item d-flex justify-content-between">
@@ -69,51 +107,33 @@ class CheckoutForm extends React.Component {
             </li>
           </ul>
 
-          <form className="card p-2">
-            <div className="input-group">
-              <input type="text" className="form-control" placeholder="Promo code" />
-              <div className="input-group-append">
-                <button type="submit" className="btn btn-secondary">Redeem</button>
-              </div>
-            </div>
-          </form>
+
         </div>
         <div className="col-md-8 order-md-1">
           <h4 className="mb-3">Billing address</h4>
-          <form className="needs-validation" noValidate="">
+          <form onSubmit={this.orderSubmit} className="needs-validation" noValidate="">
             <div className="row">
               <div className="col-md-6 mb-3">
                 <label htmlFor="firstName">First name</label>
-                <input type="text" className="form-control" id="firstName" placeholder="" value="" required="" />
+                <input onChange={this.handleCheckout} name="firstName" type="text" className="form-control" id="firstName" placeholder="" value={this.state.firstName} required="" />
                 <div className="invalid-feedback">
                   Valid first name is required.
                 </div>
               </div>
               <div className="col-md-6 mb-3">
                 <label htmlFor="lastName">Last name</label>
-                <input type="text" className="form-control" id="lastName" placeholder="" value="" required="" />
+                <input onChange={this.handleCheckout} name="lastName" type="text" className="form-control" id="lastName" placeholder="" value={this.state.lastName} required="" />
                 <div className="invalid-feedback">
                   Valid last name is required.
                 </div>
               </div>
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="username">Username</label>
-              <div className="input-group">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">@</span>
-                </div>
-                <input type="text" className="form-control" id="username" placeholder="Username" required="" />
-                <div className="invalid-feedback" style={{width: 100 +"%"}}>
-                  Your username is required.
-                </div>
-              </div>
-            </div>
+
 
             <div className="mb-3">
               <label htmlFor="email">Email <span className="text-muted">(Optional)</span></label>
-              <input type="email" className="form-control" id="email" placeholder="you@example.com" />
+              <input onChange={this.handleCheckout} name="email" value={this.state.email} type="email" className="form-control" id="email" placeholder="you@example.com" />
               <div className="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -121,7 +141,7 @@ class CheckoutForm extends React.Component {
 
             <div className="mb-3">
               <label htmlFor="address">Address</label>
-              <input type="text" className="form-control" id="address" placeholder="1234 Main St" required="" />
+              <input onChange={this.handleCheckout} name="address" type="text" className="form-control" id="address" placeholder="1234 Main St" required="" />
               <div className="invalid-feedback">
                 Please enter your shipping address.
               </div>
@@ -129,13 +149,13 @@ class CheckoutForm extends React.Component {
 
             <div className="mb-3">
               <label htmlFor="address2">Address 2 <span className="text-muted">(Optional)</span></label>
-              <input type="text" className="form-control" id="address2" placeholder="Apartment or suite" />
+              <input type="text" name="address_2" className="form-control" id="address_2" placeholder="Apartment or suite" />
             </div>
 
             <div className="row">
               <div className="col-md-5 mb-3">
                 <label htmlFor="country">Country</label>
-                <select className="custom-select d-block w-100" id="country" required="">
+                <select onChange={this.handleCheckout} value={this.state.country} name="country" className="custom-select d-block w-100" id="country" required="">
                   <option value="">Choose...</option>
                   <option>United States</option>
                 </select>
@@ -145,9 +165,59 @@ class CheckoutForm extends React.Component {
               </div>
               <div className="col-md-4 mb-3">
                 <label htmlFor="state">State</label>
-                <select className="custom-select d-block w-100" id="state" required="">
+                <select onChange={this.handleCheckout} value={this.state.state} name="state" className="custom-select d-block w-100" id="state" required="">
                   <option value="">Choose...</option>
-                  <option>California</option>
+                    <option value="AL">Alabama</option>
+                  	<option value="AK">Alaska</option>
+                  	<option value="AZ">Arizona</option>
+                  	<option value="AR">Arkansas</option>
+                  	<option value="CA">California</option>
+                  	<option value="CO">Colorado</option>
+                  	<option value="CT">Connecticut</option>
+                  	<option value="DE">Delaware</option>
+                  	<option value="DC">District Of Columbia</option>
+                  	<option value="FL">Florida</option>
+                  	<option value="GA">Georgia</option>
+                  	<option value="HI">Hawaii</option>
+                  	<option value="ID">Idaho</option>
+                  	<option value="IL">Illinois</option>
+                  	<option value="IN">Indiana</option>
+                  	<option value="IA">Iowa</option>
+                  	<option value="KS">Kansas</option>
+                  	<option value="KY">Kentucky</option>
+                  	<option value="LA">Louisiana</option>
+                  	<option value="ME">Maine</option>
+                  	<option value="MD">Maryland</option>
+                  	<option value="MA">Massachusetts</option>
+                  	<option value="MI">Michigan</option>
+                  	<option value="MN">Minnesota</option>
+                  	<option value="MS">Mississippi</option>
+                  	<option value="MO">Missouri</option>
+                  	<option value="MT">Montana</option>
+                  	<option value="NE">Nebraska</option>
+                  	<option value="NV">Nevada</option>
+                  	<option value="NH">New Hampshire</option>
+                  	<option value="NJ">New Jersey</option>
+                  	<option value="NM">New Mexico</option>
+                  	<option value="NY">New York</option>
+                  	<option value="NC">North Carolina</option>
+                  	<option value="ND">North Dakota</option>
+                  	<option value="OH">Ohio</option>
+                  	<option value="OK">Oklahoma</option>
+                  	<option value="OR">Oregon</option>
+                  	<option value="PA">Pennsylvania</option>
+                  	<option value="RI">Rhode Island</option>
+                  	<option value="SC">South Carolina</option>
+                  	<option value="SD">South Dakota</option>
+                  	<option value="TN">Tennessee</option>
+                  	<option value="TX">Texas</option>
+                  	<option value="UT">Utah</option>
+                  	<option value="VT">Vermont</option>
+                  	<option value="VA">Virginia</option>
+                  	<option value="WA">Washington</option>
+                  	<option value="WV">West Virginia</option>
+                  	<option value="WI">Wisconsin</option>
+                  	<option value="WY">Wyoming</option>
                 </select>
                 <div className="invalid-feedback">
                   Please provide a valid state.
@@ -155,7 +225,7 @@ class CheckoutForm extends React.Component {
               </div>
               <div className="col-md-3 mb-3">
                 <label htmlFor="zip">Zip</label>
-                <input type="text" className="form-control" id="zip" placeholder="" required="" />
+                <input onChange={this.handleCheckout} value={this.state.zipCode}  name="zipCode" type="text" className="form-control" id="zip" placeholder="" required="" />
                 <div className="invalid-feedback">
                   Zip code required.
                 </div>
@@ -176,7 +246,7 @@ class CheckoutForm extends React.Component {
 
             <div className="d-block my-3">
               <div className="custom-control custom-radio">
-                <input id="credit" name="paymentMethod" type="radio" className="custom-control-input" checked="" required="" />
+                <input id="credit" name="paymentMethod" type="radio" className="custom-control-input" required="" />
                 <label className="custom-control-label" htmlFor="credit">Credit card</label>
               </div>
               <div className="custom-control custom-radio">
@@ -245,4 +315,13 @@ const mapStateToProps = (state) => {
 				shoppingCart: state.shoppingCart
 			}
 }
-export default connect(mapStateToProps)(CheckoutForm);
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+      saveOrderNumber: (num) => {
+        dispatch(saveOrderNumber(num))
+      }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CheckoutForm);

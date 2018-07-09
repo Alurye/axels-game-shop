@@ -1,11 +1,14 @@
 import React from 'react';
-
+import {connect} from 'react-redux';
+import {log_In} from '../actions/index';
 
 class Login extends React.Component {
 
   state = {
       username:'',
-      password:''
+      password:'',
+      loggedIn: false
+
   }
 
   handleLoginInfo = (e) => {
@@ -35,6 +38,7 @@ class Login extends React.Component {
       localStorage.setItem('token', json.token);
       localStorage.setItem('id', json.id);
       this.props.history.push("/inventory")
+      this.props.log_In(this.state.loggedIn)
     });
   }
   render(){
@@ -46,7 +50,7 @@ class Login extends React.Component {
             <div className="col-sm-6 col-md-4 offset-md-4">
                 <h1 className="text-center login-title">Login</h1>
                 <div className="form-group">
-                    <form className="form-signin" onSubmit={(e) => this.handleSubmit(e)}>
+                    <form className="form-signin" onSubmit={this.handleSubmit}>
                       <label htmlFor="username">Username:</label>
                     <input onChange={this.handleLoginInfo} name="username" type="text" className="form-control" placeholder="Username" required autoFocus /><br/>
                       <label htmlFor="password">Password:</label>
@@ -54,7 +58,7 @@ class Login extends React.Component {
 
                      <a href="#" className="pull-right need-help">Need help? </a><span className="clearfix"></span>
                        <button className="btn btn-lg btn-primary btn-block" type="submit">
-                           Sign in</button>
+                           Login </button>
                     </form>
                 </div>
             </div>
@@ -65,4 +69,18 @@ class Login extends React.Component {
   }
 }
 
-export default Login ;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    log_In:(state) => {
+      dispatch(log_In(state))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login) ;
