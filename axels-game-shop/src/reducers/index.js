@@ -1,5 +1,6 @@
 const initialState = {
 		gameData: [],
+		inventory: [],
     shoppingCart:[],
     cartClicked: false,
 		gameFormClicked: false,
@@ -24,9 +25,14 @@ const reducer = (state = initialState, action) => {
 			case "GET_GAMES":
 		  	return { ...state, gameData: action.payload }
 
+			case "GET_INVENTORY":
+			console.log('hit');
+				return {...state, inventory: action.payload}
+
 			case "ADD_TO_CART":
 
 				return {...state, shoppingCart: [...state.shoppingCart, action.payload], currentCartItem: action.payload}
+
 
 
 			case "SHOW_GAME_DETAILS":

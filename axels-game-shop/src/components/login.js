@@ -45,7 +45,7 @@ class Login extends React.Component {
 
     console.log(this.props);
     return(
-      <main role="main" className="container cardContainer">
+      <main role="main" className="container gameContainer">
         <div className="row">
             <div className="col-sm-6 col-md-4 offset-md-4">
                 <h1 className="text-center login-title">Login</h1>

@@ -14,7 +14,7 @@ class OrderConfirmation extends React.Component {
 
       <main role="main" className="jumbotron text-center container">
         <h1 className="display-3">Thank You!</h1>
-        <h2>Order Number:{this.props.orderNumber}</h2>
+        <h2>Order Number: {this.props.orderNumber}</h2>
         <p className="lead"><strong>Your order is on it's way! Please check your email for tracking details.</strong></p>
         <hr />
         <p>

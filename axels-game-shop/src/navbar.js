@@ -23,6 +23,7 @@ state = {
 	e.preventDefault();
 	localStorage.removeItem('token')
 	localStorage.removeItem('id');
+	this.props.history.push('/');
 	this.setState({
 		loggedOut:true
 	})
@@ -44,6 +45,7 @@ render(){
 
 						{localStorage.getItem("token") ?
 								<React.Fragment>
+
 								<li className="nav-item">
 									<NavLink  to="/register-game-form"  className="nav-link">Add Game</NavLink>
 								</li>
@@ -59,21 +61,26 @@ render(){
 							</React.Fragment>
 							:
 								<React.Fragment>
+									<li className="nav-item">
+										<NavLink to="/login" className="nav-link">Login</NavLink>
+									</li>
 								<li className="nav-item">
-									<NavLink to="/games" className="nav-link">Shop Games</NavLink>
+									<NavLink to="/shop-games" className="nav-link">Shop Games</NavLink>
 								</li>
 								<li>
 								 <NavLink  to="/shopping-cart" className="btn btn-primary">
 						 <i className="fas fa-shopping-cart"></i> {this.totalCartItems()}
 						</NavLink>
 							</li>
+
 						</React.Fragment>
 						 }
 
 
 				</ul>
 				<SearchBar query={this.props.query} handleSearch={this.props.handleSearch} shoppingCart={this.props.shoppingCart} />
-			</div>
+
+		</div>
 
 		</nav>
 		)

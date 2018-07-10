@@ -6,7 +6,7 @@ import {getGames} from '../actions/index';
 
 
 
-class CardContainer extends React.Component {
+class GameContainer extends React.Component {
 
 state = {
 	games: []
@@ -18,7 +18,9 @@ componentDidMount(){
 
 }
 
-
+capitalize = (str) => {
+return str.charAt(0).toUpperCase() + str.slice(1);
+}
 // getGames = () => {
 //
 // 	let url = 'http://localhost:3000/api/v1/games'
@@ -37,14 +39,16 @@ componentDidMount(){
 // }
 
 	render(){
+		let heading = this.props.location.pathname.split('/')[1];
+
 
 
 		return (
-		<main role="main" className="container cardContainer">
-		<h1>Shop Games</h1>
+		<main role="main" className="container gameContainer">
+		<h1>{this.capitalize(heading)}</h1>
 		<div className='row'>
     	{this.props.games.map((game)=> {
-    		return <Card key={game.id} game={game} />
+    		return <Card key={game.id} {...this.props} game={game} />
     	})}
     	</div>
     </main>
@@ -69,4 +73,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CardContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(GameContainer);

@@ -19,9 +19,6 @@ class Card extends React.Component {
 		this.props.showGameDetails(game);
  }
 
-
-
-
 	handleDuplicates = (item) => {
 		const filteredCart = this.props.shoppingCart.filter(scItem => scItem.title === item.title)
 
@@ -32,15 +29,27 @@ class Card extends React.Component {
 		}
 	}
 
+	conditionalButtonShow = () => {
+
+		let pathname = this.props.location.pathname.split('/')[1];
+		if (pathname === "inventory") {
+			 return <button type="button" class="btn btn-danger">Delete Game </button>
+		} else {
+			return <button onClick={() => this.handleDuplicates(this.props.game)} type="button" className="btn btn-success btn-block">Add To Cart</button>
+
+		}
+	}
+
      render() {
-			 // console.log(this.props.shoppingCart);
+			 console.log(this.props);
      	const {title,img} = this.props.game
      return (
 		<div className="col-lg-4 col-md-6 col-xs-12">
 		  <div className="card" style={{width: 18 + "rem" }}>
 			<img className="card-img-top" src={img} alt={title} />
+
 			  <button onClick={(e) => this.showGameDetails(e,this.props.game)} className="btn btn-primary btn-block">Game Details</button>
-			  <button onClick={() => this.handleDuplicates(this.props.game)} type="button" className="btn btn-success btn-block">Add To Cart</button>
+ 				{this.conditionalButtonShow()}
 				{this.state.isClicked ?  <GameDetails game={this.props.game} />: null }
 		</div>
 	</div>

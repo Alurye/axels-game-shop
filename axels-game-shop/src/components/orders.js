@@ -2,7 +2,9 @@ import React from 'react';
 
 class Orders extends React.Component {
 
-
+  state = {
+   orders: []
+  }
 
   renderOrderRow(){
     return (
@@ -34,6 +36,7 @@ class Orders extends React.Component {
 
 
   render() {
+    console.log(this.state)
     return(
             <table className="table table-striped">
         <thead>

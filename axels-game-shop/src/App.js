@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import {BrowserRouter as Router,Switch,Route, Redirect } from 'react-router-dom';
 import Navbar from './navbar';
-import CardContainer from './components/card_container'
+import GameContainer from './components/game_container'
+import GameInventory from './components/game_inventory'
 import ShoppingCart from './components/shopping_cart'
 import {connect} from 'react-redux';
 import {addToCart} from './actions/index';
@@ -46,10 +47,8 @@ handleSearch = (e) => {
 
         <Switch>
 
-
-
                <Route exact path="/register-game-form" render={(props) => <RegisterGameForm   />} />
-               <Route exact path="/inventory" render={(props) => <CardContainer {...props} />} />
+               <Route exact path="/inventory" render={(props) => <GameInventory {...props} />} />
 
 
 
@@ -59,7 +58,7 @@ handleSearch = (e) => {
             <Route exact path="/signup" render={(props) => <SignUp {...props} />} />
             <Route exact path="/login" render={(props) => <Login {...props} /> } />
 
-            <Route exact path="/games" render={(props) => <CardContainer {...props}  />} />
+            <Route exact path="/shop-games" render={(props) => <GameContainer {...props}  />} />
             <Route exact path="/checkout" render={(props) => <CheckoutForm {...props} /> } />
             <Route exact path="/shopping-cart" render={(props) => <ShoppingCart {...props} /> } />
         </Switch>

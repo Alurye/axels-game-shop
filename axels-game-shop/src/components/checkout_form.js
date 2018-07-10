@@ -4,14 +4,15 @@ import UUID from 'uuid';
 import {saveOrderNumber} from '../actions/index';
 import {connect} from 'react-redux';
 
-
+// const uuidV3 = require('uuid/v3');
 
 
 
 
 class CheckoutForm extends React.Component {
 
-  state = {
+
+state = {
 		first_name: '',
     last_name:'',
     email:'',
@@ -21,8 +22,11 @@ class CheckoutForm extends React.Component {
     country:'',
     zipCode:'',
     store_id:1,
-    order_number: UUID()
+    order_number:''
 	}
+
+
+
 
 
 
@@ -67,6 +71,9 @@ class CheckoutForm extends React.Component {
       },
     }).then(res => res.json())
     .then(json => {
+      this.setState({
+        orderNumber: UUID()
+      });
       this.props.saveOrderNumber(this.state.orderNumber);
       this.props.history.push('/order-confirmed');
       console.log(this.state.orderNumber)
@@ -82,12 +89,12 @@ class CheckoutForm extends React.Component {
 
 
   render(){
-    console.log(this.state.orderNumber);
+    console.log(this.state);
 
     return(
       <div className="container">
       <div className="py-5 text-center">
-        <h2>Checkout form</h2>
+        <h2>Checkout</h2>
       </div>
 
       <div className="row">

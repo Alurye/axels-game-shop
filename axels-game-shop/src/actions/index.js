@@ -41,6 +41,27 @@ export function saveOrderNumber(num) {
 	}
 }
 
+export function getInventory() {
+	let url = `http://localhost:3000/api/v1/admin/${localStorage.getItem("id")}/games`
+
+	return(dispatch, getState) => {
+			 fetch(url, {
+			headers: {
+				'content-type': 'application/json',
+				'authorization': localStorage.getItem("token")
+			},
+		}).then(res => res.json())
+		.then(json => {
+			console.log(json)
+			dispatch({type: "GET_INVENTORY", payload:json});
+
+		});
+
+	}
+
+
+}
+
 
 export function getGames() {
 	let url = 'http://localhost:3000/api/v1/games';
