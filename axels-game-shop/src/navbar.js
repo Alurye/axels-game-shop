@@ -1,13 +1,20 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
+import {NavLink, Redirect} from 'react-router-dom';
 import SearchBar from './components/SearchBar';
 import {connect} from 'react-redux';
 
 class Navbar extends React.Component {
 
 state = {
-	loggedOut: this.props.loggedIn
+	loggedOut: this.props.loggedIn,
+	shopGamesClick: false,
+	path: window.location.pathname.split('/')[1]
+
 }
+
+
+// { this.state.shopGamesClick ? <SearchBar query={this.props.query} handleSearch={this.props.handleSearch} shoppingCart={this.props.shoppingCart}  /> : null
+// }
 
 
  totalCartItems = () => {
@@ -19,18 +26,28 @@ state = {
 
 	}
 
+	handleShopGameClick = (e) => {
+		this.setState({
+			shopGamesClick: true
+		}, ()=> {
+			if (this.state.path !== "shop-games") {
+				this.setState({
+					shopGamesClick: ! this.state.shopGamesClick
+				})
+			}
+		});
+	}
+
  logOut = (e) => {
 	e.preventDefault();
 	localStorage.removeItem('token')
 	localStorage.removeItem('id');
-	this.props.history.push('/');
 	this.setState({
 		loggedOut:true
-	})
+	});
 }
 
 render(){
-	console.log(this.props);
 
 	return (
 		 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
@@ -45,40 +62,38 @@ render(){
 
 						{localStorage.getItem("token") ?
 								<React.Fragment>
-
 								<li className="nav-item">
-									<NavLink  to="/register-game-form"  className="nav-link">Add Game</NavLink>
+									<NavLink  to="/register-game-form"  className="nav-link"> Game <i className="fas fa-upload"></i></NavLink>
 								</li>
 								<li className="nav-item">
-									<NavLink to="/inventory" className="nav-link">Inventory</NavLink>
+									<NavLink to="/inventory" className="nav-link">Inventory <i className="fas fa-list"></i></NavLink>
 								</li>
 								<li className="nav-item">
-									<NavLink to="/orders"  className="nav-link">Orders</NavLink>
+									<NavLink to="/orders"  className="nav-link">Orders <i className="fas fa-list-ol"></i></NavLink>
 								</li>
 								<li className="nav-item">
-									<NavLink onClick={this.logOut} to="/"  className="nav-link">Logout</NavLink>
+									<NavLink onClick={this.logOut} to="/"  className="nav-link">Logout <i className="fas fa-sign-out-alt"></i></NavLink>
 								</li>
 							</React.Fragment>
 							:
 								<React.Fragment>
 									<li className="nav-item">
-										<NavLink to="/login" className="nav-link">Login</NavLink>
+										<NavLink to="/login" className="nav-link"><i className="fas fa-sign-in-alt"></i> Admin</NavLink>
 									</li>
 								<li className="nav-item">
-									<NavLink to="/shop-games" className="nav-link">Shop Games</NavLink>
+									<NavLink onClick={this.handleShopGameClick} to="/shop-games" className="nav-link">Shop Games</NavLink>
 								</li>
 								<li>
 								 <NavLink  to="/shopping-cart" className="btn btn-primary">
 						 <i className="fas fa-shopping-cart"></i> {this.totalCartItems()}
 						</NavLink>
 							</li>
-
+							<Redirect to="/login" />
 						</React.Fragment>
 						 }
 
 
 				</ul>
-				<SearchBar query={this.props.query} handleSearch={this.props.handleSearch} shoppingCart={this.props.shoppingCart} />
 
 		</div>
 

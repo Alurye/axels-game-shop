@@ -36,11 +36,15 @@ handleSubmit = (e) => {
       'content-type': 'application/json'
     },
   }).then(res => res.json())
-  .then(json => console.log(json));
+  .then(json =>  {console.log(json)
+    this.props.history.push('/inventory');
+
+  });
 }
 
   render(){
     console.log(this.state.gameFields);
+    console.log(this.props);
     return (
       <main role="main" className="container col-md-4 offset-md-4">
         <h2>Register New Game</h2>

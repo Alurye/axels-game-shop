@@ -2,6 +2,7 @@ const initialState = {
 		gameData: [],
 		inventory: [],
     shoppingCart:[],
+		itemQty:0,
     cartClicked: false,
 		gameFormClicked: false,
 		gameDetailsClicked:false,
@@ -25,14 +26,28 @@ const reducer = (state = initialState, action) => {
 			case "GET_GAMES":
 		  	return { ...state, gameData: action.payload }
 
+				case "DELETE_GAME":
+				console.log('hit', action.payload);
+			 let filteredInventory = state.inventory.filter((item) => {
+						return item.id !== action.payload
+				});
+				return {...state, inventory: filteredInventory}
+
 			case "GET_INVENTORY":
-			console.log('hit');
+
 				return {...state, inventory: action.payload}
 
 			case "ADD_TO_CART":
+				console.log('atc')
+				// console.log(state.currentCartItem, action.payload);
+				console.log(state.currentCartItem);
+				// const x = state.currentCartItem: action.payload
+
+				// return {...state, shoppingCart: [...state.shoppingCart, state.currentCartItem ], currentCartItem: action.payload}
+
 
 				return {...state, shoppingCart: [...state.shoppingCart, action.payload], currentCartItem: action.payload}
-
+				// return {...state, currentCartItem:{...action.payload, quantity: state.itemQty}, shoppingCart: [...state.shoppingCart, state.currentCartItem]}
 
 
 			case "SHOW_GAME_DETAILS":
@@ -52,17 +67,17 @@ const reducer = (state = initialState, action) => {
 				return {...state, shoppingCart: filteredCart};
 
 			case "HANDLE_QUANTITY":
-				 let updatedGameData = state.gameData.map((game) => {
-					 if (game.id === action.payload.id) {
-						 return {
-							 ...game,
-							 quantity: action.qty
-						 }
-					 }
-					 return game;
-				 })
-
-				 return {...state, gameData: updatedGameData};
+				 // let updatedGameData = state.gameData.map((game) => {
+					//  if (game.id === action.payload.id) {
+					// 	 return {
+					// 		 ...game,
+					// 		 quantity: action.qty
+					// 	 }
+					//  }
+					//  return game;
+				 // })
+				 	console.log("hq", action.payload, "qty", action.qty, "stateqty", state.itemQty)
+				 return {...state, currentCartItem: action.payload, itemQty: action.qty };
 
 			default:
 				return state;

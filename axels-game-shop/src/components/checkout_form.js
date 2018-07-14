@@ -15,14 +15,15 @@ class CheckoutForm extends React.Component {
 state = {
 		first_name: '',
     last_name:'',
-    email:'',
+    e_mail:'',
     address:'',
     address_2: '',
     state:'',
     country:'',
-    zipCode:'',
+    zip_code:'',
     store_id:1,
-    order_number:''
+    order_number:UUID(),
+
 	}
 
 
@@ -59,8 +60,7 @@ state = {
 
 
   orderSubmit = (e) => {
-
-    e.preventDefault();
+		e.preventDefault();
     let url = 'http://localhost:3000/api/v1/orders'
     fetch(url, {
       body: JSON.stringify(this.state),
@@ -71,12 +71,19 @@ state = {
       },
     }).then(res => res.json())
     .then(json => {
-      this.setState({
-        orderNumber: UUID()
-      });
-      this.props.saveOrderNumber(this.state.orderNumber);
+			this.setState({
+				first_name: '',
+		    last_name:'',
+		    e_mail:'',
+		    address:'',
+		    address_2: '',
+		    state:'',
+		    country:'',
+		    zip_code:'',
+			})
+      this.props.saveOrderNumber(this.state.order_number);
       this.props.history.push('/order-confirmed');
-      console.log(this.state.orderNumber)
+      console.log(this.state.order_number)
     });
   }
               // <li className="list-group-item d-flex justify-content-between bg-light">
@@ -122,14 +129,14 @@ state = {
             <div className="row">
               <div className="col-md-6 mb-3">
                 <label htmlFor="firstName">First name</label>
-                <input onChange={this.handleCheckout} name="firstName" type="text" className="form-control" id="firstName" placeholder="" value={this.state.firstName} required="" />
+                <input onChange={this.handleCheckout} name="first_name" type="text" className="form-control" id="firstName" placeholder="" value={this.state.first_name} required="" />
                 <div className="invalid-feedback">
                   Valid first name is required.
                 </div>
               </div>
               <div className="col-md-6 mb-3">
                 <label htmlFor="lastName">Last name</label>
-                <input onChange={this.handleCheckout} name="lastName" type="text" className="form-control" id="lastName" placeholder="" value={this.state.lastName} required="" />
+                <input onChange={this.handleCheckout} name="last_name" type="text" className="form-control" id="lastName" placeholder="" value={this.state.last_name} required="" />
                 <div className="invalid-feedback">
                   Valid last name is required.
                 </div>
@@ -140,7 +147,7 @@ state = {
 
             <div className="mb-3">
               <label htmlFor="email">Email <span className="text-muted">(Optional)</span></label>
-              <input onChange={this.handleCheckout} name="email" value={this.state.email} type="email" className="form-control" id="email" placeholder="you@example.com" />
+              <input onChange={this.handleCheckout} name="e_mail" value={this.state.e_mail} type="email" className="form-control" id="email" placeholder="you@example.com" />
               <div className="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -232,7 +239,7 @@ state = {
               </div>
               <div className="col-md-3 mb-3">
                 <label htmlFor="zip">Zip</label>
-                <input onChange={this.handleCheckout} value={this.state.zipCode}  name="zipCode" type="text" className="form-control" id="zip" placeholder="" required="" />
+                <input onChange={this.handleCheckout} value={this.state.zip_code}  name="zip_code" type="text" className="form-control" id="zip" placeholder="" required="" />
                 <div className="invalid-feedback">
                   Zip code required.
                 </div>

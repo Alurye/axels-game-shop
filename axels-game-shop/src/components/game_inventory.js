@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from './card';
+import Item from './item';
 import GameContainer from './game_container';
 import {connect} from 'react-redux';
 import {getInventory} from '../actions/index';
@@ -15,7 +15,6 @@ state = {
 
 componentDidMount(){
 	this.props.dispatch(getInventory());
-	// this.getInventory();
 
 }
 
@@ -38,10 +37,18 @@ componentDidMount(){
 // }
 
 	render(){
-		console.log(this.props);
+
+		let heading = this.props.location.pathname.split('/')[1];
 
 		return (
-    	<GameContainer {...this.props} />
+			<main role="main" className="container gameContainer">
+			<h1>Inventory</h1>
+			<div className='row'>
+				{this.props.inventory.map((game)=> {
+					return <Item key={game.id} {...this.props} game={game} />
+				})}
+				</div>
+			</main>
 	);
 	}
 

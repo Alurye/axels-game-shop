@@ -43,7 +43,7 @@ class ShoppingCart extends React.Component {
 							<td className="text-center"><strong>Total 1.99</strong></td>
 						</tr>
 						<tr>
-							<td><Link to="/games" className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</Link></td>
+							<td><Link to="/shop-games" className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</Link></td>
 							<td colSpan="2" className="hidden-sm-up"></td>
 							<td className="hidden-sm-up text-center"><strong>Total ${this.calculateTotal()}</strong></td>
 							<td>{this.props.shoppingCart.length !== 0 ? <Link to="/checkout" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></Link> : null }

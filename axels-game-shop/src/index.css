@@ -28,6 +28,10 @@ h1, h2 {
 }
 
 
+.nav-link > i {
+  padding-left:5px;
+}
+
 
  .gameContainer .row > div {
 	margin-bottom:2rem;
@@ -51,7 +55,7 @@ h1, h2 {
 
 
 /* shopping cart css */
-.table>tbody>tr>td, .table>tfoot>tr>td{
+#cart.table>tbody>tr>td, .table>tfoot>tr>td{
     vertical-align: middle;
 }
 @media screen and (max-width: 600px) {

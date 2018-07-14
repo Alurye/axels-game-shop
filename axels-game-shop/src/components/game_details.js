@@ -8,26 +8,27 @@ import {handleQuantity} from '../actions/index';
 class GameDetails extends React.Component {
 
 	state = {
-		quantity: this.props.game.quantity, //2
+		quantity: this.props.game.quantity,
+		cartAmount:0
 	}
 
-	handleQuantity = (e, item) => {
+	handleQuantity = (e, q, item) => {
 		e.preventDefault();
-		let newQuantity = parseInt(e.target.value, 10)
-
+		let newQuantity = parseInt(e.target.value)
 		if (newQuantity > this.props.game.quantity) {
 			this.setState({
 				quantity: this.props.game.quantity
-			}, () => this.props.handleQuantity(this.state.quantity, item));
+			});
 		} else if (newQuantity < 1) {
 			this.setState({
 				quantity: 1
-			}, () => this.props.handleQuantity(this.state.quantity, item));
+			});
 		} else {
 			this.setState({
 			quantity: newQuantity
-		}, () => this.props.handleQuantity(this.state.quantity, item));
+		},() => this.props.handleQuantity(newQuantity,item));
 		}
+		console.log(item);
 	}
 
 	render(){
@@ -41,7 +42,7 @@ class GameDetails extends React.Component {
 			<form className="form-inline">
 			<div className="input-group mb-2 mr-sm-2 mb-sm-0">
 				<label htmlFor="Quantity">Quantity: </label>
-				 <input name="quantity" onChange={(e)=> this.handleQuantity(e, this.props.game)} className='form-control mb-2 mr-sm-2 mb-sm-0' type="number" value={this.state.quantity} />
+				 <input name="quantity" onChange={(e)=> this.handleQuantity(e, this.state.quantity,this.props.game)} className='form-control mb-2 mr-sm-2 mb-sm-0' type="number" value={this.state.quantity} placeholder={this.state.quantity} />
 			</div>
 			</ form>
 			<p className="card-text"><strong>Genre:</strong> {genre}</p>

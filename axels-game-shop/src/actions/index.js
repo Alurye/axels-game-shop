@@ -1,7 +1,8 @@
-export function addToCart(item) {
+export function addToCart(item, q) {
 	return {
 		type: "ADD_TO_CART",
-		payload: item
+		payload: item,
+		qty: q
 	}
 }
 
@@ -20,6 +21,7 @@ export function deleteItem(item) {
 }
 
 export function handleQuantity(q,item) {
+	// debugger
 	return {
 		type: "HANDLE_QUANTITY",
 		payload: item,
@@ -74,8 +76,30 @@ export function getGames() {
 			},
 		}).then(res => res.json())
 		.then(json => {
-			console.log(json)
 			dispatch({type: "GET_GAMES", payload:json});
+
+		});
+
+	}
+
+
+}
+
+
+export function deleteGame(id) {
+	let url = `http://localhost:3000/api/v1/games/${id}`;
+
+	return(dispatch, getState) => {
+			 fetch(url, {
+			method: "DELETE",
+			headers: {
+				'content-type': 'application/json',
+				'authorization': localStorage.getItem("token")
+			},
+		}).then(res => res.json())
+		.then(json => {
+			console.log(json)
+			dispatch({type: "DELETE_GAME", payload:id});
 
 		});
 

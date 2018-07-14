@@ -35,15 +35,24 @@ class Login extends React.Component {
     }).then(res => res.json())
     .then(json => {
       console.log(json)
-      localStorage.setItem('token', json.token);
-      localStorage.setItem('id', json.id);
-      this.props.history.push("/inventory")
-      this.props.log_In(this.state.loggedIn)
+    const blah = localStorage.setItem('token', json.token);
+    const beef = localStorage.setItem('id', json.id);
+    console.log(blah, beef);
+
+      if (json.token !== undefined) {
+        console.log('hit');
+        this.props.log_In(this.state.loggedIn)
+        this.props.history.push("/inventory")
+      } else {
+        console.log('hello')
+        this.props.history.push("/login")
+      }
+
     });
   }
   render(){
 
-    console.log(this.props);
+    // console.log(this.props);
     return(
       <main role="main" className="container gameContainer">
         <div className="row">

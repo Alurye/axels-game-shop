@@ -9,7 +9,6 @@ class OrderConfirmation extends React.Component {
 
 
   render(){
-    console.log(this.props, this.props.orderNumber)
     return (
 
       <main role="main" className="jumbotron text-center container">
@@ -21,7 +20,7 @@ class OrderConfirmation extends React.Component {
           Having trouble? <a href="#">Contact us</a>
         </p>
         <p className="lead">
-          <Link to="/games" className="btn btn-primary" role="button">Continue Shopping</Link>
+          <Link to="/shop-games" className="btn btn-primary" role="button">Continue Shopping</Link>
         </p>
       </main>
     );
