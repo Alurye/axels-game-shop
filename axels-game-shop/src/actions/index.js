@@ -6,6 +6,15 @@ export function addToCart(item, q) {
 	}
 }
 
+export function refreshCart(item) {
+	return {
+		type: "REFRESH_CART",
+		payload: item
+	}
+}
+
+
+
 export function showGameDetails(game) {
 	return {
 		type: "SHOW_GAME_DETAILS",
@@ -20,12 +29,18 @@ export function deleteItem(item) {
 	}
 }
 
-export function handleQuantity(q,item) {
+export function handleQuantity(item) {
 	// debugger
 	return {
 		type: "HANDLE_QUANTITY",
-		payload: item,
-		qty: q
+		payload: item
+	}
+}
+
+export function resetCurrentCartItem() {
+	return {
+		type: "RESET_CURRENT_CART_ITEM",
+		payload: null
 	}
 }
 

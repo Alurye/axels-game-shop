@@ -8,12 +8,16 @@ class ShoppingCart extends React.Component {
 	calculateTotal = () => {
 		let total = 0;
 		this.props.shoppingCart.forEach((item) => {
-			let subtotal = item.price * item.quantity
+			let subtotal = item.price * item.userQty
 			 total+=subtotal;
 		});
 		return total.toFixed(2);
 	}
 
+
+	// <tr className="hidden-xs-down">
+	// 	<td className="text-center"><strong>Total 1.99</strong></td>
+	// </tr>
 
 
 	render(){
@@ -39,9 +43,7 @@ class ShoppingCart extends React.Component {
 
 					</tbody>
 					<tfoot>
-						<tr className="hidden-xs-down">
-							<td className="text-center"><strong>Total 1.99</strong></td>
-						</tr>
+
 						<tr>
 							<td><Link to="/shop-games" className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</Link></td>
 							<td colSpan="2" className="hidden-sm-up"></td>

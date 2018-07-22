@@ -8,32 +8,43 @@ import {handleQuantity} from '../actions/index';
 class GameDetails extends React.Component {
 
 	state = {
-		quantity: this.props.game.quantity,
-		cartAmount:0
+		// quantity: this.props.game.quantity,
+		currentCartItem: {
+				...this.props.game,
+				userQty:this.props.game.quantity
+
+	}
 	}
 
-	handleQuantity = (e, q, item) => {
+	handleQuantity = (e,item) => {
 		e.preventDefault();
 		let newQuantity = parseInt(e.target.value)
 		if (newQuantity > this.props.game.quantity) {
 			this.setState({
-				quantity: this.props.game.quantity
+				currentCartItem:{
+					...this.props.game,
+					userQty: this.props.game.quantity
+				}
 			});
 		} else if (newQuantity < 1) {
 			this.setState({
-				quantity: 1
+				currentCartItem:{
+					...this.props.game,
+					userQty: 1
+				}
 			});
 		} else {
 			this.setState({
-			quantity: newQuantity
-		},() => this.props.handleQuantity(newQuantity,item));
+				currentCartItem:{
+				...this.props.game,
+				userQty: newQuantity
+			}
+		}, ()=>  this.props.handleQuantity(this.state.currentCartItem));
 		}
-		console.log(item);
 	}
 
 	render(){
-		// console.log(this.state.quantity)
-		// console.log(this.props.gameData);
+		console.log(this.state.currentCartItem);
 		const {title,genre,price,description} = this.props.game
 		return (
 		<div className="card-body">
@@ -42,7 +53,7 @@ class GameDetails extends React.Component {
 			<form className="form-inline">
 			<div className="input-group mb-2 mr-sm-2 mb-sm-0">
 				<label htmlFor="Quantity">Quantity: </label>
-				 <input name="quantity" onChange={(e)=> this.handleQuantity(e, this.state.quantity,this.props.game)} className='form-control mb-2 mr-sm-2 mb-sm-0' type="number" value={this.state.quantity} placeholder={this.state.quantity} />
+				 <input name="userQty" onChange={(e)=> this.handleQuantity(e,this.state.currentCartItem)} className='form-control mb-2 mr-sm-2 mb-sm-0' type="number" value={this.state.currentCartItem.userQty} placeholder={this.state.userQty} />
 			</div>
 			</ form>
 			<p className="card-text"><strong>Genre:</strong> {genre}</p>
@@ -55,15 +66,14 @@ class GameDetails extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		gameData: state.gameData,
 		currentCartItem: state.currentCartItem
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleQuantity: (e,q,item) => {
-			dispatch(handleQuantity(e,q,item));
+		handleQuantity: (e,item) => {
+			dispatch(handleQuantity(e,item));
 		}
 	}
 }

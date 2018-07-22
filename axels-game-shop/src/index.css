@@ -51,6 +51,10 @@ h1, h2 {
 	display:none !important;
 }
 
+.card {
+  width: 18rem;
+}
+
 }
 
 
@@ -64,16 +68,11 @@ h1, h2 {
 		display: inline !important;
 	}
 	.actions .btn{
-		width:36%;
-		margin:1.5em 0;
+    width:100%;
+		margin:.1em 0;
 	}
 
-	.actions .btn-info{
-		float:left;
-	}
-	.actions .btn-danger{
-		float:right;
-	}
+
 
 	table#cart thead { display: none; }
 	table#cart tbody td { display: block; padding: .6rem; min-width:320px;}

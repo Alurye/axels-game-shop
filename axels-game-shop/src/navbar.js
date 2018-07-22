@@ -20,7 +20,7 @@ state = {
  totalCartItems = () => {
 		let totalCartItems = 0;
 				 this.props.shoppingCart.map((item) => {
-							return totalCartItems+=item.quantity;
+							return totalCartItems+=item.userQty;
 									});
 					return totalCartItems;
 

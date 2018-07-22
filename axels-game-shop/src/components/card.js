@@ -1,56 +1,51 @@
 import React from 'react';
 import GameDetails from './game_details';
 import {connect} from 'react-redux';
-import {addToCart} from '../actions/index';
-import {showGameDetails} from '../actions/index';
+import {addToCart, showGameDetails, resetCurrentCartItem} from '../actions/index';
 
 class Card extends React.Component {
 
 	state = {
 		isClicked: false,
-		pathname: this.props.location.pathname.split('/')[1]
+		currentCartItem: {
+			...this.props.game,
+			userQty:this.props.game.quantity
+		}
 	}
 
 	  showGameDetails = (e, game) => {
       e.preventDefault();
       this.setState({
       isClicked: !this.state.isClicked
-    });
+    	});
 
-		this.props.showGameDetails(game);
+			this.props.showGameDetails(game);
  }
 
 		handleDuplicates = (item) => {
-		const filteredCart = this.props.shoppingCart.filter(scItem => scItem.title === item.title)
+			const filteredCart = this.props.shoppingCart.filter(scItem => scItem.title === item.title)
 
-		if(filteredCart.length !== 0) {
-			return false;
-		} else {
-				 console.log(this.props.game);
-			this.props.addToCart(this.props.game)
-		}
+			if(filteredCart.length !== 0) {
+				return false;
+			} else {
+					 console.log(item);
+				this.props.addToCart(item)
+				this.props.resetCurrentCartItem();
+			}
 	}
 
-	// conditionalButtonShow = (path) => {
-	//
-	// 			if (path === "inventory") {
-	// 				 return <button type="button" onClick={this.} className="btn btn-danger btn-block">Delete Game </button>
-	// 			} else {
-	// 				return <button onClick={() => this.handleDuplicates(this.props.game)} type="button" className="btn btn-success btn-block">Add To Cart</button>
-	//
-	// 			}
-	// }
+
 
      render() {
-
      	const {title,img} = this.props.game
-     return (
+
+		 return (
 		<div className="col-lg-4 col-md-6 col-xs-12">
-		  <div className="card" style={{width: 18 + "rem" }}>
+		  <div className="card">
 			<img className="card-img-top" src={img} alt={title} />
 
 			  <button onClick={(e) => this.showGameDetails(e,this.props.game)} className="btn btn-primary btn-block">Game Details</button>
-			  <button onClick={() => this.handleDuplicates(this.props.game)} type="button" className="btn btn-success btn-block">Add To Cart</button>
+			  <button onClick={() => this.handleDuplicates(this.state.currentCartItem)} type="button" className="btn btn-success btn-block">Add To Cart</button>
 
 				{this.state.isClicked ?  <GameDetails game={this.props.game} />: null }
 		</div>
@@ -70,11 +65,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addToCart: (item) => {
-      dispatch(addToCart(item))
+    addToCart: (game) => {
+      dispatch(addToCart(game))
     },
 		showGameDetails: (game) => {
 			dispatch(showGameDetails(game))
+		},
+		resetCurrentCartItem:() => {
+			dispatch(resetCurrentCartItem());
 		}
   }
 }

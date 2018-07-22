@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {deleteItem} from '../actions/index';
-import {handleQuantity} from '../actions/index';
+import {deleteItem, refreshCart, handleQuantity} from '../actions/index';
 
 
 
@@ -9,34 +8,49 @@ import {handleQuantity} from '../actions/index';
 class CartItem extends React.Component {
 
 	state =  {
-		quantity: this.props.item.quantity
+		currentCartItem:{
+			...this.props.item,
+			userQty: this.props.item.userQty
+
+		}
 	}
 
-	handleQuantity = (e) => {
-		if (e.target.value > this.props.item.quantity) {
+	handleQuantity = (e, q, item) => {
+		e.preventDefault();
+		let newQuantity = parseInt(e.target.value);
+		if (newQuantity > this.props.item.quantity) {
 			this.setState({
-				quantity: this.props.item.quantity
+				currentCartItem:{
+					...this.props.item,
+					userQty: this.props.item.quantity
+				}
 			});
-		} else if ( e.target.value < 0) {
+		} else if ( newQuantity < 1) {
+			// console.log('elseif');
 			this.setState({
-				quantity: 1
+				currentCartItem:{
+					...this.props.item,
+					userQty: 1
+				}
 			});
 		} else {
 			this.setState({
-				quantity: e.target.value
+				currentCartItem: {
+					...this.props.item,
+					userQty: newQuantity
+				}
 			});
 		}
 	}
 
-	refreshCart = (e, q, item) => {
-		e.preventDefault();
-		this.props.handleQuantity(this.state.quantity,this.props.item);
-	}
+	// refreshCart = (e, q, item) => {
+	// 	e.preventDefault();
+	// 	console.log('hey');
+	// 		this.props.handleQuantity(q,item);
+	// }
 
 render(){
-
-
-	const {img, title, description, price, quantity} = this.props.item;
+	const {img, title, description, price, userQty} = this.props.item;
 
 	return(
 		<tr>
@@ -51,11 +65,11 @@ render(){
 			</td>
 			<td data-th="Price">${price}</td>
 			<td data-th="Quantity">
-				<input type="number" onChange={this.handleQuantity} className="form-control text-center" value={this.state.quantity} />
+				<input type="number" onChange={this.handleQuantity} className="form-control text-center" value={this.state.currentCartItem.userQty} />
 			</td>
-			<td data-th="Subtotal" className="text-center">${price * quantity}</td>
+			<td data-th="Subtotal" className="text-center">${price * userQty}</td>
 			<td className="actions" data-th="">
-				<button onClick={(e)=> this.refreshCart(e,this.props.item)} className="btn btn-info btn-sm"><i className="fas fa-sync-alt"></i></button>
+				<button onClick={(e)=> this.props.refreshCart(e,this.state.currentCartItem)} className="btn btn-info btn-sm"><i className="fas fa-sync-alt"></i></button>
 				<button onClick={() => this.props.deleteItem(this.props.item)} className="btn btn-danger btn-sm"><i className="fas fa-trash-alt"></i></button>
 			</td>
 		</tr>
@@ -66,7 +80,8 @@ render(){
 
 const mapStateToProps = (state) => {
 			return {
-				shoppingCart: state.shoppingCart
+				shoppingCart: state.shoppingCart,
+				itemQty: state.itemQty
 			}
 }
 const mapDispatchToProps = (dispatch) => {
@@ -75,8 +90,11 @@ const mapDispatchToProps = (dispatch) => {
 		deleteItem: (item) => {
 			 dispatch(deleteItem(item));
 		},
-		handleQuantity: (e,q,item) => {
-			dispatch(handleQuantity(e,q,item));
+		handleQuantity: (e,item) => {
+			dispatch(handleQuantity(e,item));
+		},
+		refreshCart: (e,item) => {
+			dispatch(refreshCart(item))
 		}
 	}
 

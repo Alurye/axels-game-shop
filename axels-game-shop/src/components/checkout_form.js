@@ -4,7 +4,6 @@ import UUID from 'uuid';
 import {saveOrderNumber} from '../actions/index';
 import {connect} from 'react-redux';
 
-// const uuidV3 = require('uuid/v3');
 
 
 
@@ -71,16 +70,6 @@ state = {
       },
     }).then(res => res.json())
     .then(json => {
-			this.setState({
-				first_name: '',
-		    last_name:'',
-		    e_mail:'',
-		    address:'',
-		    address_2: '',
-		    state:'',
-		    country:'',
-		    zip_code:'',
-			})
       this.props.saveOrderNumber(this.state.order_number);
       this.props.history.push('/order-confirmed');
       console.log(this.state.order_number)
