@@ -45,6 +45,7 @@ class Login extends React.Component {
         this.props.history.push("/inventory")
       } else {
         console.log('hello')
+        localStorage.clear();
         this.props.history.push("/login")
       }
 

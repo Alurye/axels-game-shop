@@ -19,13 +19,14 @@ class ShoppingCart extends React.Component {
 	// 	<td className="text-center"><strong>Total 1.99</strong></td>
 	// </tr>
 
-
-	render(){
-				// console.log(this.props);
-
-		const displayItems = this.props.shoppingCart.map((item) =>{
+	displayItems = ()=> {
+	return	this.props.shoppingCart.map((item) =>{
 			return <CartItem key={item.id} item={item} />
-		})
+		});
+	}
+	render(){
+
+
 		return (
 		 <main role="main" className="shoppingCart container">
 			<table id="cart" className="table table-hover table-condensed">
@@ -39,7 +40,7 @@ class ShoppingCart extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-						{this.props.shoppingCart.length === 0 ? <tr><td style={{paddingTop:15 + "px" }}>Your shopping cart is currently empty.</td></tr>: displayItems}
+						{this.props.shoppingCart.length === 0 ? <tr><td style={{paddingTop:15 + "px" }}>Your shopping cart is currently empty.</td></tr>: this.displayItems()}
 
 					</tbody>
 					<tfoot>

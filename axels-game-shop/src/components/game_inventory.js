@@ -1,6 +1,5 @@
 import React from 'react';
 import Item from './item';
-import GameContainer from './game_container';
 import {connect} from 'react-redux';
 import {getInventory} from '../actions/index';
 

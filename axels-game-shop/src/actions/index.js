@@ -13,7 +13,12 @@ export function refreshCart(item) {
 	}
 }
 
-
+export function clearCart(){
+	return {
+		type: "CLEAR_CART",
+		payload: []
+	}
+}
 
 export function showGameDetails(game) {
 	return {

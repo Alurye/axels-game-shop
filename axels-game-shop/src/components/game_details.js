@@ -46,10 +46,11 @@ class GameDetails extends React.Component {
 	render(){
 		console.log(this.state.currentCartItem);
 		const {title,genre,price,description} = this.props.game
+		console.log(typeof price);
 		return (
 		<div className="card-body">
 			<h4 className="card-title">{title}</h4>
-			<p className="card-text"><strong>Price:</strong> ${price}</p>
+			<p className="card-text"><strong>Price:</strong> ${parseFloat(price).toFixed(2)}</p>
 			<form className="form-inline">
 			<div className="input-group mb-2 mr-sm-2 mb-sm-0">
 				<label htmlFor="Quantity">Quantity: </label>

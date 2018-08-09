@@ -1,13 +1,14 @@
 import React from 'react';
 import GameDetails from './game_details';
+import EditDetails from './edit_details';
 import {deleteGame} from '../actions/index';
 import {connect} from 'react-redux';
-import {showGameDetails} from '../actions/index';
 
 class Item extends React.Component {
 
 	state = {
 		isClicked: false,
+		editBtnClckd: false,
 		pathname: this.props.location.pathname.split('/')[1]
 	}
 
@@ -17,31 +18,34 @@ class Item extends React.Component {
       isClicked: !this.state.isClicked
     });
 
-		this.props.showGameDetails(game);
  }
 
 
-     render() {
+ // <button data-toggle="modal" data-target={"#"+id} type="button" className="btn btn-warning btn-block">Edit Details</button>
 
-     	const {title,img} = this.props.game
+
+ render() {
+
+     	const {title,id,img} = this.props.game
+
      return (
-		<div className="col-lg-4 col-md-6 col-xs-12">
-		  <div className="card" style={{width: 18 + "rem" }}>
-			<img className="card-img-top" src={img} alt={title} />
+						<div className="col-lg-4 col-md-6 col-xs-12">
+						  <div className="card" style={{width: 18 + "rem" }}>
+							<img className="card-img-top" src={img} alt={title} />
+							  <button onClick={(e) => this.showGameDetails(e,this.props.game)} className="btn btn-primary btn-block">Game Details</button>
+				 				<button  onClick={() => this.props.deleteGame(this.props.game.id)} type="button" className="btn btn-danger btn-block">Delete Game </button>
+								{this.state.isClicked ?  <GameDetails game={this.props.game} />: null }
+						</div>
+							<EditDetails game={this.props.game} />
+					</div>
 
-			  <button onClick={(e) => this.showGameDetails(e,this.props.game)} className="btn btn-primary btn-block">Game Details</button>
- 				<button  onClick={() => this.props.deleteGame(this.props.game.id)}type="button" className="btn btn-danger btn-block">Delete Game </button>
-				{this.state.isClicked ?  <GameDetails game={this.props.game} />: null }
-		</div>
-	</div>
-	)
-     }
+					)
+     		}
 
 }
 
 const mapStateToProps = (state) => {
 		return {
-			shoppingCart: state.shoppingCart,
 			currentCartItem: state.currentCartItem,
 			gameDetailsClicked: state.gameDetailsClicked
 		}
@@ -49,9 +53,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-		showGameDetails: (game) => {
-			dispatch(showGameDetails(game))
-		},
 		deleteGame: (id) => {
 			dispatch(deleteGame(id))
 		},

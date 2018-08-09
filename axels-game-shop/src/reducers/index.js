@@ -19,16 +19,14 @@ const reducer = (state = initialState, action) => {
 			case "GET_GAMES":
 		  	return { ...state, gameData: action.payload }
 
-				case "DELETE_GAME":
-				if (state.shoppingCart.length === 0) {
-					return {...state, currentCartItem: null}
-				} else {
-						let filteredInventory = state.inventory.filter((item) => {
+			case "DELETE_GAME":
+					let filteredInventory = state.inventory.filter((item) => {
 							 return item.id !== action.payload
 					 });
 					 return {...state, inventory: filteredInventory}
 
-				}
+			case "CLEAR_CART":
+			return {...state, shoppingCart: []}
 
 			case "GET_INVENTORY":
 
@@ -75,10 +73,18 @@ const reducer = (state = initialState, action) => {
 			  	return {...state, loggedIn: !state.loggedIn}
 
 		   case "DELETE_ITEM":
-				let filteredCart = state.shoppingCart.filter((itm) => {
-					return itm.id !== action.payload.id
-				});
-				return {...state, shoppingCart: filteredCart};
+
+			 if (state.shoppingCart.length === 0) {
+				 return {...state, currentCartItem: null}
+			 } else {
+				 let filteredCart = state.shoppingCart.filter((itm) => {
+					 return itm.id !== action.payload.id
+				 });
+				 return {...state, shoppingCart: filteredCart};
+			 }
+
+
+
 
 			case "HANDLE_QUANTITY":
 				 // let updatedGameData = state.gameData.map((game) => {

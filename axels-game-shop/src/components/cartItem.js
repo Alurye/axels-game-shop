@@ -17,7 +17,7 @@ class CartItem extends React.Component {
 
 	handleQuantity = (e, q, item) => {
 		e.preventDefault();
-		let newQuantity = parseInt(e.target.value);
+		let newQuantity = parseInt(e.target.value, 10);
 		if (newQuantity > this.props.item.quantity) {
 			this.setState({
 				currentCartItem:{
@@ -43,11 +43,7 @@ class CartItem extends React.Component {
 		}
 	}
 
-	// refreshCart = (e, q, item) => {
-	// 	e.preventDefault();
-	// 	console.log('hey');
-	// 		this.props.handleQuantity(q,item);
-	// }
+
 
 render(){
 	const {img, title, description, price, userQty} = this.props.item;
@@ -63,11 +59,11 @@ render(){
 					</div>
 				</div>
 			</td>
-			<td data-th="Price">${price}</td>
+			<td data-th="Price">${parseFloat(price).toFixed(2)}</td>
 			<td data-th="Quantity">
 				<input type="number" onChange={this.handleQuantity} className="form-control text-center" value={this.state.currentCartItem.userQty} />
 			</td>
-			<td data-th="Subtotal" className="text-center">${price * userQty}</td>
+			<td data-th="Subtotal">${parseFloat(price * userQty).toFixed(2)}</td>
 			<td className="actions" data-th="">
 				<button onClick={(e)=> this.props.refreshCart(e,this.state.currentCartItem)} className="btn btn-info btn-sm"><i className="fas fa-sync-alt"></i></button>
 				<button onClick={() => this.props.deleteItem(this.props.item)} className="btn btn-danger btn-sm"><i className="fas fa-trash-alt"></i></button>
