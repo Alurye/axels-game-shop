@@ -2,9 +2,8 @@ import React from 'react';
 import CheckoutListItem from './checkout_list_item';
 import UUID from 'uuid';
 import {saveOrderNumber, clearCart} from '../actions/index';
+import {Elements,CardElement, injectStripe} from 'react-stripe-elements';
 import {connect} from 'react-redux';
-
-
 
 
 
@@ -57,6 +56,9 @@ state = {
 		return total.toFixed(2);
 	}
 
+		async submit(ev) {
+	     // User clicked submit
+	   }
 
   orderSubmit = (e) => {
 		e.preventDefault();
@@ -76,7 +78,9 @@ state = {
       console.log(this.state.order_number)
     });
   }
-              // <li className="list-group-item d-flex justify-content-between bg-light">
+
+
+							// <li className="list-group-item d-flex justify-content-between bg-light">
               //   <div className="text-success">
               //     <h6 className="my-0">Promo code</h6>
               //     <small>EXAMPLECODE</small>
@@ -86,6 +90,7 @@ state = {
 
 
   render(){
+
 
     return(
       <div className="container">
@@ -286,16 +291,24 @@ state = {
                   Expiration date required
                 </div>
               </div>
-              <div className="col-md-3 mb-3">
-                <label htmlFor="cc-expiration">CVV</label>
-                <input type="text" className="form-control" id="cc-cvv" placeholder=""  />
-                <div className="invalid-feedback">
-                  Security code required
-                </div>
-              </div>
+							<div className="col-md-3 mb-3">
+	                <label htmlFor="cc-expiration">CVV</label>
+	                <input type="text" className="form-control" id="cc-cvv" placeholder="" required="" />
+	                <div className="invalid-feedback">
+	                  Security code required
+	                </div>
+								</div>
             </div>
+						<div className="row">
+							<div className="col-md-12 mb-3 checkout">
+									<p>Would you like to complete the purchase?</p>
+								<CardElement />
+							 <button className="btn btn-success btn-lg btn-block" onClick={this.submit}>Send</button>
+							</div>
+						</div>
             <hr className="mb-4" />
             <button className="btn btn-success btn-lg btn-block" type="submit">Confirm Purchase</button>
+
           </form>
         </div>
       </div>
@@ -309,6 +322,8 @@ state = {
         </ul>
       </footer>
     </div>
+
+
     )
   }
 }
@@ -330,4 +345,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CheckoutForm);
+export default injectStripe(connect(mapStateToProps, mapDispatchToProps)(CheckoutForm));

@@ -14,6 +14,7 @@ import Login from './components/login';
 import CheckoutForm from './components/checkout_form';
 import Home from './components/home';
 import OrderConfirmation from './components/order_confirmation'
+import {Elements, StripeProvider} from 'react-stripe-elements';
 
 class App extends Component {
 
@@ -45,6 +46,7 @@ handleSearch = (e) => {
       <React.Fragment>
         <Navbar query={this.state.query} handleSearch={this.handleSearch} />
 
+
         <Switch>
 
                <Route exact path="/register-game-form" render={(props) => <RegisterGameForm {...props}  />} />
@@ -59,11 +61,19 @@ handleSearch = (e) => {
             <Route exact path="/login" render={(props) => <Login {...props} /> } />
               <Route exact path="/orders" render={(props) => <Orders {...props}  />} />
             <Route exact path="/shop-games" render={(props) => <GameContainer {...props}  />} />
-            <Route exact path="/checkout" render={(props) => <CheckoutForm {...props} /> } />
+            <Route exact path="/checkout" render={(props) =>
+                <StripeProvider apiKey="pk_test_LwL4RUtinpP3PXzYirX2jNfR">
+                  <Elements>
+                    <CheckoutForm {...props} />
+                  </Elements>
+                </StripeProvider> } />
             <Route exact path="/shopping-cart" render={(props) => <ShoppingCart {...props} /> } />
         </Switch>
+
+
     </React.Fragment>
 </Router>
+
     );
   }
 }
