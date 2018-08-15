@@ -302,8 +302,7 @@ state = {
 						<div className="row">
 							<div className="col-md-12 mb-3 checkout">
 									<p>Would you like to complete the purchase?</p>
-								<CardElement />
-							 <button className="btn btn-success btn-lg btn-block" onClick={this.submit}>Send</button>
+							
 							</div>
 						</div>
             <hr className="mb-4" />
