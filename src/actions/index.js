@@ -6,6 +6,12 @@ export function addToCart(item, q) {
 	}
 }
 
+export function cartTotal() {
+	return {
+		type: "CART_TOTAL",
+		payload: null
+	}
+}
 export function refreshCart(item) {
 	return {
 		type: "REFRESH_CART",

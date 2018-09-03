@@ -7,7 +7,6 @@ class Navbar extends React.Component {
 
 state = {
 	loggedOut: this.props.loggedIn,
-	shopGamesClick: false,
 	path: window.location.pathname.split('/')[1]
 
 }
@@ -26,17 +25,7 @@ state = {
 
 	}
 
-	handleShopGameClick = (e) => {
-		this.setState({
-			shopGamesClick: true
-		}, ()=> {
-			if (this.state.path !== "shop-games") {
-				this.setState({
-					shopGamesClick: ! this.state.shopGamesClick
-				})
-			}
-		});
-	}
+
 
  logOut = (e) => {
 	e.preventDefault();
@@ -81,7 +70,7 @@ render(){
 										<NavLink to="/login" className="nav-link"><i className="fas fa-sign-in-alt"></i> Admin</NavLink>
 									</li>
 								<li className="nav-item">
-									<NavLink onClick={this.handleShopGameClick} to="/shop-games" className="nav-link">Shop Games</NavLink>
+									<NavLink to="/shop-games" className="nav-link">Shop Games</NavLink>
 								</li>
 								<li>
 								 <NavLink  to="/shopping-cart" className="btn btn-primary">

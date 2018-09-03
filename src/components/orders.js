@@ -32,10 +32,14 @@ class Orders extends React.Component {
         <td valign="top">{order.country}</td>
         <td valign="top">{order.zip_code}</td>
         <td valign="top">{order.order_number}</td>
+        <td valign="top"><ul>{order.games.length > 0 ?
+                    order.games.map(g =>{return <li>{g.title}</li> }): null}</ul></td>
+
       </tr>
     )
   }
   render() {
+    console.log(this.state);
     return(
         <main role="main" className="container">
           <h1>Orders</h1>
@@ -52,11 +56,13 @@ class Orders extends React.Component {
             <th scope="col">Country</th>
             <th scope="col">zip code</th>
             <th scope="col">order_number</th>
+            <th scope="col">games_ordered</th>
           </tr>
         </thead>
 
         <tbody>
           {this.state.orders.map((order)=> {
+              // debugger
             return this.renderRow(order)
           })}
         </tbody>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {deleteItem, refreshCart, handleQuantity} from '../actions/index';
+import {deleteItem, refreshCart, handleQuantity, cartTotal} from '../actions/index';
 
 
 
@@ -43,7 +43,16 @@ class CartItem extends React.Component {
 		}
 	}
 
+refreshCart = (e, item) => {
+	this.props.refreshCart(e,item);
+	this.props.cartTotal();
+}
 
+deleteItem = (item) => {
+	this.props.deleteItem(item);
+	this.props.cartTotal();
+
+}
 
 render(){
 	const {img, title, description, price, userQty} = this.props.item;
@@ -65,8 +74,8 @@ render(){
 			</td>
 			<td data-th="Subtotal">${parseFloat(price * userQty).toFixed(2)}</td>
 			<td className="actions" data-th="">
-				<button onClick={(e)=> this.props.refreshCart(e,this.state.currentCartItem)} className="btn btn-info btn-sm"><i className="fas fa-sync-alt"></i></button>
-				<button onClick={() => this.props.deleteItem(this.props.item)} className="btn btn-danger btn-sm"><i className="fas fa-trash-alt"></i></button>
+				<button onClick={(e)=> this.refreshCart(e,this.state.currentCartItem)} className="btn btn-info btn-sm"><i className="fas fa-sync-alt"></i></button>
+				<button onClick={() => this.deleteItem(this.props.item)} className="btn btn-danger btn-sm"><i className="fas fa-trash-alt"></i></button>
 			</td>
 		</tr>
 		);
@@ -77,7 +86,8 @@ render(){
 const mapStateToProps = (state) => {
 			return {
 				shoppingCart: state.shoppingCart,
-				itemQty: state.itemQty
+				itemQty: state.itemQty,
+				cartAmount: state.cartAmount
 			}
 }
 const mapDispatchToProps = (dispatch) => {
@@ -91,6 +101,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		refreshCart: (e,item) => {
 			dispatch(refreshCart(item))
+		},
+		cartTotal: () => {
+			dispatch(cartTotal())
 		}
 	}
 

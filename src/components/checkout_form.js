@@ -2,7 +2,8 @@ import React from 'react';
 import CheckoutListItem from './checkout_list_item';
 import UUID from 'uuid';
 import {saveOrderNumber, clearCart} from '../actions/index';
-import {Elements,CardElement, injectStripe} from 'react-stripe-elements';
+import {Elements,CardElement,CardNumberElement,CardExpiryElement,CardCVCElement,
+PostalCodeElement,injectStripe} from 'react-stripe-elements';
 import {connect} from 'react-redux';
 
 
@@ -11,58 +12,69 @@ class CheckoutForm extends React.Component {
 
 
 state = {
-		first_name: '',
-    last_name:'',
-    e_mail:'',
-    address:'',
-    address_2: '',
-    state:'',
-    country:'',
-    zip_code:'',
-    store_id:1,
-    order_number:UUID(),
+			first_name: '',
+	    last_name:'',
+	    e_mail:'',
+	    address:'',
+	    address_2: '',
+	    state:'',
+	    country:'',
+	    zip_code:'',
+	    store_id:1,
+	    order_number:UUID(),
+			games: this.props.shoppingCart,
+			charge: {
+				name:'',
+				address:'',
+				amount: this.props.cartAmount * 100,
+			}
+
 
 	}
-
-
-
-
-
 
 
   handleCheckout = (e) => {
     e.preventDefault();
     this.setState({
       [e.target.name]: e.target.value
-    })
+    });
 
   }
 
   totalCartItems = () => {
-       let totalCartItems = 0;
-            this.props.shoppingCart.map((item) => {
+          return this.props.shoppingCart.reduce((totalCartItems,item) => {
                  return totalCartItems+=item.userQty;
-                     });
-             return totalCartItems;
-
+							 },0);
      }
 
-	calculateTotal = () => {
-		let total = 0;
-		this.props.shoppingCart.forEach((item) => {
-			let subtotal = item.price * item.userQty
-			 total+=subtotal;
-		});
-		return total.toFixed(2);
-	}
 
-		async submit(ev) {
-	     // User clicked submit
-	   }
 
   orderSubmit = (e) => {
 		e.preventDefault();
+
+		let {token} = this.props.stripe.createToken({
+			name: `${this.state.first_name + ' ' + this.state.last_name}`,
+     address_country: this.state.country,
+     address_line1: this.state.address,
+     address_state: this.state.state
+	})
+	.then(({token}) => {
+				console.log('Received Stripe token:', token);
+			 fetch("http://localhost:3000/api/v1/charges", {
+				 method: "POST",
+	       body: JSON.stringify(this.state.amount),
+	       headers: {
+	         'Accept': 'application/json',
+	         'Content-Type': 'application/json'
+	       }
+	     })
+			 .then(res => res.json())
+	     .then(json => { console.log(json)});
+
+		 });
+
     let url = 'http://localhost:3000/api/v1/orders'
+
     fetch(url, {
       body: JSON.stringify(this.state),
       method: "POST",
@@ -76,22 +88,13 @@ state = {
       this.props.history.push('/order-confirmed');
 			this.props.clearCart();
       console.log(this.state.order_number)
+
     });
   }
 
 
-							// <li className="list-group-item d-flex justify-content-between bg-light">
-              //   <div className="text-success">
-              //     <h6 className="my-0">Promo code</h6>
-              //     <small>EXAMPLECODE</small>
-              //   </div>
-              //   <span className="text-success">-$5</span>
-              // </li>
-
-
   render(){
-
-
+		console.log(this.state.amount)
     return(
       <div className="container">
       <div className="py-5 text-center">
@@ -111,7 +114,7 @@ state = {
 
             <li className="list-group-item d-flex justify-content-between">
               <span>Total (USD)</span>
-              <strong>${this.calculateTotal()}</strong>
+              <strong>${this.props.cartAmount}</strong>
             </li>
           </ul>
 
@@ -136,7 +139,6 @@ state = {
                 </div>
               </div>
             </div>
-
 
 
             <div className="mb-3">
@@ -233,7 +235,7 @@ state = {
               </div>
               <div className="col-md-3 mb-3">
                 <label htmlFor="zip">Zip</label>
-                <input onChange={this.handleCheckout} value={this.state.zip_code}  name="zip_code" type="text" className="form-control" id="zip" placeholder="" required  pattern="^\d{5}(?:[-\s]\d{4})?$"/>
+                <input onChange={this.handleCheckout} value={this.state.zip_code}  name="zip_code" type="text" className="form-control" id="zip_code" placeholder="" required  pattern="^\d{5}(?:[-\s]\d{4})?$"/>
                 <div className="invalid-feedback">
                   Zip code required.
                 </div>
@@ -254,30 +256,22 @@ state = {
 
             <div className="d-block my-3">
               <div className="custom-control custom-radio">
-                <input id="credit" name="paymentMethod" type="radio" className="custom-control-input" required />
+                <input id="credit" name="paymentMethod" type="radio" className="custom-control-input" defaultChecked="true" required />
                 <label className="custom-control-label" htmlFor="credit">Credit card</label>
-              </div>
-              <div className="custom-control custom-radio">
-                <input id="debit" name="paymentMethod" type="radio" className="custom-control-input" required />
-                <label className="custom-control-label" htmlFor="debit">Debit card</label>
-              </div>
-              <div className="custom-control custom-radio">
-                <input id="paypal" name="paymentMethod" type="radio" className="custom-control-input" required />
-                <label className="custom-control-label" htmlFor="paypal">Paypal</label>
               </div>
             </div>
             <div className="row">
               <div className="col-md-6 mb-3">
                 <label htmlFor="cc-name">Name on card</label>
-                <input type="text" className="form-control" id="cc-name" placeholder=""  />
+                <input onChange={this.handleCheckout} name={this.state.charge.name} type="text" className="form-control" id="cc-name" placeholder=""  />
                 <small className="text-muted">Full name as displayed on card</small>
                 <div className="invalid-feedback">
                   Name on card is required
                 </div>
               </div>
               <div className="col-md-6 mb-3">
-                <label htmlFor="cc-number">Credit card number</label>
-                <input type="text" className="form-control" id="cc-number" placeholder=""  />
+                <label htmlFor="cc-number">Credit card number </label>
+									<CardNumberElement id="cc-number" className="form-control" />
                 <div className="invalid-feedback">
                   Credit card number is required
                 </div>
@@ -286,25 +280,27 @@ state = {
             <div className="row">
               <div className="col-md-3 mb-3">
                 <label htmlFor="cc-expiration">Expiration</label>
-                <input type="text" className="form-control" id="cc-expiration" placeholder=""  />
+								<CardExpiryElement className="form-control" id="cc-expiration" required />
                 <div className="invalid-feedback">
                   Expiration date required
                 </div>
               </div>
 							<div className="col-md-3 mb-3">
-	                <label htmlFor="cc-expiration">CVV</label>
-	                <input type="text" className="form-control" id="cc-cvv" placeholder="" required="" />
+	                <label htmlFor="cc-expiration">CVC</label>
+									<CardCVCElement className="form-control" id="cc-cvv" required />
 	                <div className="invalid-feedback">
 	                  Security code required
 	                </div>
 								</div>
+								<div className="col-md-6 mb-3">
+									<label htmlFor="cc-number">Zip Code </label>
+										<PostalCodeElement id="postal_code" className="form-control" />
+									<div className="invalid-feedback">
+										Postal code is required
+									</div>
+								</div>
             </div>
-						<div className="row">
-							<div className="col-md-12 mb-3 checkout">
-									<p>Would you like to complete the purchase?</p>
-							
-							</div>
-						</div>
+
             <hr className="mb-4" />
             <button className="btn btn-success btn-lg btn-block" type="submit">Confirm Purchase</button>
 
@@ -329,7 +325,8 @@ state = {
 
 const mapStateToProps = (state) => {
 			return {
-				shoppingCart: state.shoppingCart
+				shoppingCart: state.shoppingCart,
+				cartAmount: state.cartAmount
 			}
 }
 

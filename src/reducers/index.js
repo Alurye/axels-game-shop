@@ -9,8 +9,8 @@ const initialState = {
 		orderNumber:'',
     query: '',
     cartCount:0,
-    currentCartItem: null
-
+    currentCartItem: null,
+		cartAmount:0
 }
 
 // Keep the object as is, send the itemQty down as state
@@ -42,60 +42,47 @@ const reducer = (state = initialState, action) => {
 							}
 				});
 				return {...state, shoppingCart: newCart}
+
+			case "CART_TOTAL":
+		let  total = state.shoppingCart.reduce((total,item) => {
+							let subtotal = item.price*item.userQty;
+							 return total+=subtotal;
+			},0).toFixed(2);
+			return {...state, cartAmount: total}
+
 			case "ADD_TO_CART":
 
 				if (state.currentCartItem === null) {
-					console.log('if', state.currentCartItem)
+					// console.log('if', state.currentCartItem)
 					return {...state, shoppingCart: [...state.shoppingCart, action.payload]}
 				} else {
-					console.log('else', state.currentCartItem)
+					// console.log('else', state.currentCartItem)
 					return {...state, shoppingCart: [...state.shoppingCart, state.currentCartItem]}
 				}
-
-				// return {...state, shoppingCart: [...state.shoppingCart, action.payload], currentCartItem: action.payload}
-				// return {...state, shoppingCart: [...state.shoppingCart, action.payload], currentCartItem: action.payload}
-
-				// return {...state, shoppingCart: [...state.shoppingCart, action.payload], currentCartItem: action.payload}
-				// return {...state, currentCartItem:{...action.payload, quantity: state.itemQty}, shoppingCart: [...state.shoppingCart, state.currentCartItem]}
 
 				case "RESET_CURRENT_CART_ITEM":
 
 					return {...state, currentCartItem: action.payload}
 
-		  	// case "SHOW_GAME_DETAILS":
-			  // 	return {...state, gameDetailsClicked: !state.gameDetailsClicked, currentCartItem: action.payload}
-
-			 case "SAVE_ORDER_NUMBER":
+			  case "SAVE_ORDER_NUMBER":
 			  	return {...state, orderNumber: action.payload }
 
 
-		   case "LOGIN":
+		    case "LOGIN":
 			  	return {...state, loggedIn: !state.loggedIn}
 
-		   case "DELETE_ITEM":
+		    case "DELETE_ITEM":
 
-			 if (state.shoppingCart.length === 0) {
-				 return {...state, currentCartItem: null}
-			 } else {
-				 let filteredCart = state.shoppingCart.filter((itm) => {
-					 return itm.id !== action.payload.id
-				 });
-				 return {...state, shoppingCart: filteredCart};
-			 }
-
-
-
+				 if (state.shoppingCart.length === 0) {
+					 return {...state, currentCartItem: null}
+				 } else {
+					 let filteredCart = state.shoppingCart.filter((itm) => {
+						 return itm.id !== action.payload.id
+					 });
+					 return {...state, shoppingCart: filteredCart};
+				 }
 
 			case "HANDLE_QUANTITY":
-				 // let updatedGameData = state.gameData.map((game) => {
-					//  if (game.id === action.payload.id) {
-					// 	 return {
-					// 		 ...game,
-					// 		 quantity: action.qty
-					// 	 }
-					//  }
-					//  return game;
-				 // })
 				 return {...state, currentCartItem: action.payload};
 
 			default:

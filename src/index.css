@@ -57,6 +57,9 @@ h1, h2 {
 
 }
 
+#cc-number iframe {
+  height:24px !important;
+}
 
 /* shopping cart css */
 #cart.table>tbody>tr>td, .table>tfoot>tr>td{
