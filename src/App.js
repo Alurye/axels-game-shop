@@ -24,7 +24,6 @@ class App extends Component {
 
 
 handleSearch = (e) => {
-
     this.setState({
       query: e.target.value
   });
@@ -34,35 +33,29 @@ handleSearch = (e) => {
 
 
   render() {
-    // console.log(this.state.gameData);
-    // let filteredSearch = this.props.games.filter(item =>
-    //       item.title.toLowerCase().includes(this.state.query.toLowerCase()));
-    // console.log(this.updateGames(2,1));
-    // console.log(this.state.gameData, prevState);
-    // console.log(this.state.currentCartItem.quantity,this.state.currentCartItem);
     return (
       <Router>
-      <React.Fragment>
+        <React.Fragment>
         <Navbar query={this.state.query} handleSearch={this.handleSearch} />
           <Switch>
                <Route exact path="/register-game-form" render={(props) => <RegisterGameForm {...props}  />} />
                <Route exact path="/inventory" render={(props) => <GameInventory {...props} />} />
                <Route exact path="/order-confirmed" render={(props) => <OrderConfirmation {...props} />} />
-              <Route exact path="/" render={(props) => <Home {...props} />} />
-              <Route exact path="/signup" render={(props) => <SignUp {...props} />} />
-              <Route exact path="/login" render={(props) => <Login {...props} /> } />
-                <Route exact path="/orders" render={(props) => <Orders {...props}  />} />
-              <Route exact path="/shop-games" render={(props) => <GameContainer {...props}  />} />
-              <Route exact path="/checkout" render={(props) =>
-                  <StripeProvider apiKey="pk_test_r4WBhp5c125mnOrPE0p051qO  ">
-                    <Elements>
-                      <CheckoutForm {...props} />
-                    </Elements>
-                  </StripeProvider> } />
+               <Route exact path="/" render={(props) => <Home {...props} />} />
+               <Route exact path="/signup" render={(props) => <SignUp {...props} />} />
+               <Route exact path="/login" render={(props) => <Login {...props} /> } />
+               <Route exact path="/orders" render={(props) => <Orders {...props}  />} />
+               <Route exact path="/shop-games" render={(props) => <GameContainer {...props}  />} />
+               <Route exact path="/checkout" render={(props) =>
+                <StripeProvider apiKey="pk_test_r4WBhp5c125mnOrPE0p051qO">
+                <Elements>
+                  <CheckoutForm {...props} />
+                </Elements>
+              </StripeProvider> } />
               <Route exact path="/shopping-cart" render={(props) => <ShoppingCart {...props} /> } />
           </Switch>
-    </React.Fragment>
-</Router>
+        </React.Fragment>
+    </Router>
 
     );
   }

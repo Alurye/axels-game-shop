@@ -1,6 +1,7 @@
 const initialState = {
 		gameData: [],
 		inventory: [],
+		orders:[],
     shoppingCart:[],
     cartClicked: false,
 		gameFormClicked: false,
@@ -17,7 +18,11 @@ const initialState = {
 const reducer = (state = initialState, action) => {
 		switch(action.type) {
 			case "GET_GAMES":
-		  	return { ...state, gameData: action.payload }
+		  		return { ...state, gameData: action.payload }
+
+			case "GET_ORDERS":
+
+					return {...state, orders: action.payload}
 
 			case "DELETE_GAME":
 					let filteredInventory = state.inventory.filter((item) => {
@@ -26,7 +31,15 @@ const reducer = (state = initialState, action) => {
 					 return {...state, inventory: filteredInventory}
 
 			case "CLEAR_CART":
-			return {...state, shoppingCart: []}
+				return {...state, shoppingCart: []}
+
+			case "TOTAL_CART_ITEMS":
+
+				const totalCartItems = state.shoppingCart.reduce((totalCartItems,item) => {
+										 return totalCartItems+=item.userQty;
+									 },0);
+
+				return {...state, cartCount: totalCartItems}
 
 			case "GET_INVENTORY":
 
@@ -44,11 +57,11 @@ const reducer = (state = initialState, action) => {
 				return {...state, shoppingCart: newCart}
 
 			case "CART_TOTAL":
-		let  total = state.shoppingCart.reduce((total,item) => {
+				let  total = state.shoppingCart.reduce((total,item) => {
 							let subtotal = item.price*item.userQty;
 							 return total+=subtotal;
 			},0).toFixed(2);
-			return {...state, cartAmount: total}
+				return {...state, cartAmount: total}
 
 			case "ADD_TO_CART":
 

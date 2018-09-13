@@ -1,29 +1,18 @@
 import React from 'react';
 import {NavLink, Redirect} from 'react-router-dom';
 import SearchBar from './components/SearchBar';
+import cartCount from './actions/index';
 import {connect} from 'react-redux';
 
 class Navbar extends React.Component {
 
 state = {
-	loggedOut: this.props.loggedIn,
-	path: window.location.pathname.split('/')[1]
-
+	loggedOut: this.props.loggedIn
 }
 
 
 // { this.state.shopGamesClick ? <SearchBar query={this.props.query} handleSearch={this.props.handleSearch} shoppingCart={this.props.shoppingCart}  /> : null
 // }
-
-
- totalCartItems = () => {
-		let totalCartItems = 0;
-				 this.props.shoppingCart.map((item) => {
-							return totalCartItems+=item.userQty;
-									});
-					return totalCartItems;
-
-	}
 
 
 
@@ -37,7 +26,6 @@ state = {
 }
 
 render(){
-
 	return (
 		 <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
 			<NavLink to="/" className="navbar-brand">Axel's Game Shop</NavLink>
@@ -74,7 +62,7 @@ render(){
 								</li>
 								<li>
 								 <NavLink  to="/shopping-cart" className="btn btn-primary">
-						 <i className="fas fa-shopping-cart"></i> {this.totalCartItems()}
+						 <i className="fas fa-shopping-cart"></i> {this.props.cartCount}
 						</NavLink>
 							</li>
 							<Redirect to="/login" />
@@ -99,6 +87,7 @@ const mapStateToProps = (state) => {
     shoppingCart: state.shoppingCart,
 		gameFormClicked: state.gameFormClicked,
 		cartClicked: state.cartClicked,
+		cartCount: state.cartCount,
 		loggedIn: state.loggedIn
   }
 }

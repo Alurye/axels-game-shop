@@ -6,6 +6,13 @@ export function addToCart(item, q) {
 	}
 }
 
+export function totalCartItems() {
+	return {
+		type: "TOTAL_CART_ITEMS",
+		payload: null
+	}
+}
+
 export function cartTotal() {
 	return {
 		type: "CART_TOTAL",
@@ -41,7 +48,6 @@ export function deleteItem(item) {
 }
 
 export function handleQuantity(item) {
-	// debugger
 	return {
 		type: "HANDLE_QUANTITY",
 		payload: item
@@ -90,6 +96,23 @@ export function getInventory() {
 
 }
 
+export function getOrders() {
+	const url = `http://localhost:3000/api/v1/admin/${localStorage.getItem("id")}/orders`
+
+	return (dispatch, getState) => {
+		fetch(url,{
+	 headers: {
+		 'content-type': 'application/json',
+		 'authorization': localStorage.getItem("token")
+	 }
+ }).then(res => res.json())
+	 .then(json => {
+		 console.log(json)
+			dispatch({type: "GET_ORDERS", payload: json});
+		});
+	}
+
+}
 
 export function getGames() {
 	let url = 'http://localhost:3000/api/v1/games';
@@ -111,7 +134,6 @@ export function getGames() {
 
 }
 
-
 export function deleteGame(id) {
 	let url = `http://localhost:3000/api/v1/games/${id}`;
 
@@ -124,38 +146,10 @@ export function deleteGame(id) {
 			},
 		}).then(res => res.json())
 		.then(json => {
-			console.log(json)
 			dispatch({type: "DELETE_GAME", payload:id});
 
 		});
 
 	}
 
-
 }
-
-
-// export function handleLoginSubmit(cred) {
-// 	// console.log(e);
-// 	// e.preventDefault();
-// 	let url = 'http://localhost:3000/api/v1/sessions'
-// 	return(dispatch, getState) => {
-// 		fetch(url, {
-// 			body: JSON.stringify(cred),
-// 			method: "POST",
-// 			headers: {
-// 				'accept': 'application/json',
-// 				'content-type': 'application/json'
-//
-// 			},
-// 		}).then(res => res.json())
-// 		.then(json => {
-// 			console.log(json)
-// 			dispatch({type: "LOGIN"});
-// 			localStorage.setItem('token', json.token);
-// 			localStorage.setItem('id', json.id);
-// 			this.props.history.push("/inventory")
-// 		});
-// 	}
-//
-// }

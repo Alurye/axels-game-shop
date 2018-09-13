@@ -2,13 +2,8 @@ import React from 'react';
 import CartItem from './cartItem'
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+
 class ShoppingCart extends React.Component {
-
-
-
-	// <tr className="hidden-xs-down">
-	// 	<td className="text-center"><strong>Total 1.99</strong></td>
-	// </tr>
 
 	displayItems = ()=> {
 	return	this.props.shoppingCart.map((item) =>{
@@ -37,7 +32,11 @@ class ShoppingCart extends React.Component {
 						<tr>
 							<td><Link to="/shop-games" className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</Link></td>
 							<td colSpan="2" className="hidden-sm-up"></td>
-							<td className="hidden-sm-up text-center"><strong>Total ${this.props.cartAmount}</strong></td>
+							<td className="hidden-sm-up text-center">
+								<strong>
+									Total ${this.props.cartAmount}
+								</strong>
+							</td>
 							<td>{this.props.shoppingCart.length !== 0 ? <Link to="/checkout" className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right"></i></Link> : null }
 </td>
 						</tr>

@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckoutListItem from './checkout_list_item';
 import UUID from 'uuid';
-import {saveOrderNumber, clearCart} from '../actions/index';
+import {saveOrderNumber, clearCart, cartCount} from '../actions/index';
 import {Elements,CardElement,CardNumberElement,CardExpiryElement,CardCVCElement,
 PostalCodeElement,injectStripe} from 'react-stripe-elements';
 import {connect} from 'react-redux';
@@ -40,14 +40,6 @@ state = {
     });
 
   }
-
-  totalCartItems = () => {
-          return this.props.shoppingCart.reduce((totalCartItems,item) => {
-                 return totalCartItems+=item.userQty;
-							 },0);
-     }
-
-
 
   orderSubmit = (e) => {
 		e.preventDefault();
@@ -94,7 +86,6 @@ state = {
 
 
   render(){
-		console.log(this.state.amount)
     return(
       <div className="container">
       <div className="py-5 text-center">
@@ -105,7 +96,7 @@ state = {
         <div className="col-md-4 order-md-2 mb-4">
           <h4 className="d-flex justify-content-between align-items-center mb-3">
             <span className="text-muted">Your cart</span>
-            <span className="badge badge-primary badge-pill">{this.totalCartItems()}</span>
+            <span className="badge badge-primary badge-pill">{this.props.cartCount}</span>
           </h4>
           <ul className="list-group mb-3">
               {this.props.shoppingCart.length !== 0 ? this.props.shoppingCart.map((item) => {
@@ -326,7 +317,8 @@ state = {
 const mapStateToProps = (state) => {
 			return {
 				shoppingCart: state.shoppingCart,
-				cartAmount: state.cartAmount
+				cartAmount: state.cartAmount,
+				cartCount: state.cartCount
 			}
 }
 

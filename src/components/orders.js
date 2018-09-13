@@ -1,22 +1,12 @@
 import React from 'react';
+import {getOrders} from '../actions/index';
+import {connect} from 'react-redux';
 
 class Orders extends React.Component {
 
-  state = {
-   orders: []
-  }
-
-
 
   componentDidMount(){
-    let url = 'http://localhost:3000/api/v1/orders'
-    fetch(url)
-    .then(res => res.json())
-    .then(json => {
-      this.setState({
-        orders: json
-      })
-    });
+    this.props.dispatch(getOrders());
   }
 
   renderRow = (order) => {
@@ -39,7 +29,6 @@ class Orders extends React.Component {
     )
   }
   render() {
-    console.log(this.state);
     return(
         <main role="main" className="container">
           <h1>Orders</h1>
@@ -61,8 +50,7 @@ class Orders extends React.Component {
         </thead>
 
         <tbody>
-          {this.state.orders.map((order)=> {
-              // debugger
+          {this.props.orders.map((order)=> {
             return this.renderRow(order)
           })}
         </tbody>
@@ -71,4 +59,20 @@ class Orders extends React.Component {
     );
   }
 }
-export default Orders;
+
+const mapStateToProps = (state) => {
+  return {
+    orders: state.orders
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getOrders: (orders) => {
+      dispatch({type: "GET_ORDERS", payload: orders})
+    },
+    dispatch
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Orders);

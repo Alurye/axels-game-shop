@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {deleteItem, refreshCart, handleQuantity, cartTotal} from '../actions/index';
+import {deleteItem,totalCartItems, refreshCart, handleQuantity, cartTotal} from '../actions/index';
 
 
 
@@ -46,11 +46,13 @@ class CartItem extends React.Component {
 refreshCart = (e, item) => {
 	this.props.refreshCart(e,item);
 	this.props.cartTotal();
+	this.props.totalCartItems();
 }
 
 deleteItem = (item) => {
 	this.props.deleteItem(item);
 	this.props.cartTotal();
+	this.props.totalCartItems();
 
 }
 
@@ -104,6 +106,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		cartTotal: () => {
 			dispatch(cartTotal())
+		},
+		totalCartItems: () => {
+			dispatch(totalCartItems())
 		}
 	}
 
