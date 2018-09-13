@@ -1,5 +1,4 @@
 # Axel's Game Shop
-<hr/>
 
 ### An online video game e-commerce shop specializing in vintage video games.
 
