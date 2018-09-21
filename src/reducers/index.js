@@ -33,6 +33,12 @@ const reducer = (state = initialState, action) => {
 			case "CLEAR_CART":
 				return {...state, shoppingCart: []}
 
+				case "CLEAR_CART_COUNT":
+					return {...state, cartCount: 0}
+
+					case "CLEAR_CART_AMOUNT":
+						return {...state, cartAmount: 0}
+
 			case "TOTAL_CART_ITEMS":
 
 				const totalCartItems = state.shoppingCart.reduce((totalCartItems,item) => {
@@ -46,7 +52,6 @@ const reducer = (state = initialState, action) => {
 				return {...state, inventory: action.payload}
 
 			case "REFRESH_CART":
-				console.log(action.payload)
 				let newCart = state.shoppingCart.map((item) => {
 							if (item.id === action.payload.id){
 								 return action.payload
@@ -66,10 +71,8 @@ const reducer = (state = initialState, action) => {
 			case "ADD_TO_CART":
 
 				if (state.currentCartItem === null) {
-					// console.log('if', state.currentCartItem)
 					return {...state, shoppingCart: [...state.shoppingCart, action.payload]}
 				} else {
-					// console.log('else', state.currentCartItem)
 					return {...state, shoppingCart: [...state.shoppingCart, state.currentCartItem]}
 				}
 

@@ -33,6 +33,19 @@ export function clearCart(){
 	}
 }
 
+export function clearCartCount(){
+	return {
+		type: "CLEAR_CART_COUNT",
+		payload: 0
+	}
+}
+
+export function clearCartAmount(){
+	return {
+		type: "CLEAR_CART_AMOUNT",
+		payload: 0
+	}
+}
 export function showGameDetails(game) {
 	return {
 		type: "SHOW_GAME_DETAILS",

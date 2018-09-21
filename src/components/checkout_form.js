@@ -1,7 +1,7 @@
 import React from 'react';
 import CheckoutListItem from './checkout_list_item';
 import UUID from 'uuid';
-import {saveOrderNumber, clearCart, cartCount} from '../actions/index';
+import {saveOrderNumber, clearCart, cartCount, clearCartCount, clearCartAmount} from '../actions/index';
 import {Elements,CardElement,CardNumberElement,CardExpiryElement,CardCVCElement,
 PostalCodeElement,injectStripe} from 'react-stripe-elements';
 import {connect} from 'react-redux';
@@ -54,7 +54,7 @@ state = {
 				console.log('Received Stripe token:', token);
 			 fetch("http://localhost:3000/api/v1/charges", {
 				 method: "POST",
-	       body: JSON.stringify(this.state.amount),
+	       body: JSON.stringify(this.state.charge.amount),
 	       headers: {
 	         'Accept': 'application/json',
 	         'Content-Type': 'application/json'
@@ -79,6 +79,8 @@ state = {
       this.props.saveOrderNumber(this.state.order_number);
       this.props.history.push('/order-confirmed');
 			this.props.clearCart();
+			this.props.clearCartCount();
+			// this.props.clearCartAmount();
       console.log(this.state.order_number)
 
     });
@@ -329,6 +331,12 @@ const mapDispatchToProps = (dispatch) => {
       },
 			clearCart: () => {
 				dispatch(clearCart())
+			},
+			clearCartCount: () => {
+				dispatch(clearCartCount())
+			},
+			clearCartAmount: () => {
+				dispatch(clearCartAmount())
 			}
     }
 }

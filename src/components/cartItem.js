@@ -26,7 +26,6 @@ class CartItem extends React.Component {
 				}
 			});
 		} else if ( newQuantity < 1) {
-			// console.log('elseif');
 			this.setState({
 				currentCartItem:{
 					...this.props.item,
