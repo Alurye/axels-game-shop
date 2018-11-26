@@ -6,7 +6,7 @@ class Orders extends React.Component {
 
 
   componentDidMount(){
-    this.props.dispatch(getOrders());
+    this.props.getOrders();
   }
 
   renderRow = (order) => {
@@ -29,6 +29,7 @@ class Orders extends React.Component {
     )
   }
   render() {
+    console.log(this.props.orders);
     return(
         <main role="main" className="container">
           <h1>Orders</h1>
@@ -68,8 +69,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getOrders: (orders) => {
-      dispatch({type: "GET_ORDERS", payload: orders})
+    getOrders: () => {
+      dispatch(getOrders())
     },
     dispatch
   }
