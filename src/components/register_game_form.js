@@ -1,5 +1,8 @@
 import React from 'react';
 
+
+
+
 class RegisterGameForm extends React.Component {
 
   state = {
@@ -16,12 +19,25 @@ class RegisterGameForm extends React.Component {
   }
 
   handleGameInfo = ({target}) => {
-    this.setState({
-       gameFields: {...this.state.gameFields,
-        [target.name]: target.value
-      }
+      console.log(target.value);
+     if (target.name === "quantity" && target.value < 0) {
+        this.setState({
+          gameFields: {...this.state.gameFields,
+                quantity: 0
+        }
+      });
 
-    });
+
+    }  else {
+      this.setState({
+         gameFields: {...this.state.gameFields,
+          [target.name]: target.value
+        }
+
+      });
+    }
+
+
   }
 
 handleSubmit = (e) => {
