@@ -13,7 +13,7 @@
 * Bootstrap
 * Stripe API
 
-<a href="https://github.com/Alurye/axels-game-shop-backend/backend">Backend </a>
+<a href="https://github.com/Alurye/axels-game-shop-backend/tree/master/backend">Backend </a>
 
 * Rails API
 * BCrypt
